@@ -1,11 +1,11 @@
-import './App.css';
+import classes from './styles.module.scss';
 
 import PopUp  from './components/pop-up';
 
 
 function App() {
   return (
-    <div className="App">
+    <div className={classes.app}>
       <PopUp />
     </div>
   );

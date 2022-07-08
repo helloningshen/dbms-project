@@ -1,0 +1,89 @@
+@import '../assets/mixins';
+
+.modal {
+  @include primeFont();
+    background: rgba(255, 255, 255, 0.8);
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    top: 0;
+    left: 0;
+    z-index: 5;
+  }
+  
+  .component {
+    min-width: 50vw;
+    min-height: 30vw;
+    background-color: $success-color;
+    padding: 20px;
+    box-shadow:  15px 20px 15px 10px;  
+  
+  }
+
+  
+  
+.content h1 {
+	text-align: center;
+	margin-bottom: 80px;
+	color: rgba(0, 0, 0, 0.6);
+}
+
+.box {
+	background-color: #1d1e22;
+	padding: 20px 40px;
+	border-radius: 30px;
+	box-shadow: 5px 5px 10px 3px rgba(0, 0, 0, 0.5);
+	color: #f9f9f9;
+}
+
+.listOuter {
+	list-style: none;
+	counter-reset: op-order-list;
+}
+
+.list {
+	counter-increment: op-order-list;
+	margin-bottom: 10px;
+	font-weight: 400;
+	transition: transform 1.2s ease;
+  text-align: left;
+}
+
+.list::before {
+	content: counter(op-order-list);
+	width: 30px;
+	height: 30px;
+	margin-right: 10px;
+	padding-left: 8px;
+	padding-top: 4px;
+	/* 	border-radius: 24% 76% 39% 61% / 0% 70% 30% 100%; */
+	border-radius: 50% 50% 0% 50%;
+	background: linear-gradient(135deg, #c3ec52 0%, #0ba29d 100%);
+	color: #1d1e22;
+	font-size: 20px;
+	text-align: center;
+	display: inline-block;
+	box-sizing: border-box;
+	transition: border-radius 1s ease, background 2s ease;
+}
+
+.list:hover {
+	border-radius: 10px;
+	transform: translatex(20px);
+	font-weight: 700;
+}
+
+.list:hover::before {
+	background: linear-gradient(
+		135deg,
+		rgba(245, 177, 97, 1) 0%,
+		rgba(236, 54, 110, 1) 100%
+	);
+	padding-left: 4px;
+	border-radius: 0% 50% 50% 50%;
+	color: #1d1e22;
+}
+
