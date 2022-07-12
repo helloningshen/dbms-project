@@ -32,26 +32,39 @@ const Form = () => {
             autoComplete=""
             variant="standard"
           />
+
+
           <TextField
-            id="description"
-            label="Description"
-            type="text"
-            autoComplete=""
-            variant="standard"
-          /> <TextField
             id="authorName"
             label="Author Name"
             type="text"
             autoComplete=""
             variant="standard"
 
-          /> <TextField
+          />
+          <TextField
             id=""
             label="Type of the Book (Dept)"
             type="text"
             autoComplete=""
             variant="standard"
           />
+
+          <TextField
+            id="semester"
+            label="Semester (optional)"
+            type="text"
+            autoComplete=""
+            variant="standard"
+          />
+          <TextField
+            id="description"
+            label="Description"
+            type="text"
+            autoComplete=""
+            variant="standard"
+          />
+
           <label htmlFor="contained-button-file">
             <Input accept="image/*" id="contained-button-file" multiple type="file" />
           </label>

@@ -11,12 +11,12 @@ HOW TO RUN THE PROJECT
 
 Run client:
 
-    - cd project_name
-    - yarn start-client
+    - cd client
+    - yarn && yarn start
 
-Run server
+Run server (in second terminal)
 
-    - cd project_name
-    - yarn start-server
+    - cd server
+    - yarn && yarn start
 
 ```

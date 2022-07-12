@@ -18,7 +18,12 @@ const dbConfig = () => {
     }
     console.log('Connected to the MySQL server.');
   });
+
+  return connection
 }
 
 
-dbConfig()
+let conn = dbConfig()
+
+
+module.exports = conn
