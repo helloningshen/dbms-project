@@ -20,3 +20,9 @@ Run server (in second terminal)
     - yarn && yarn start
 
 ```
+
+## backend  :
+- [x] FE: UI
+- [x] API: FILES
+- [ ] AUTH
+
