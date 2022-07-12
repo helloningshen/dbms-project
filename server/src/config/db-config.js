@@ -19,6 +19,14 @@ const dbConfig = () => {
     console.log('Connected to the MySQL server.');
   });
 
+
+  var sql = `CREATE TABLE IF NOT EXISTS files (id varchar(250) not null, name VARCHAR(255), author VARCHAR(255), primary key(id))`;
+
+  connection.query(sql, function (err, result) {
+    if (err) throw err;
+    console.log("Table Name:files created!");
+  });
+
   return connection
 }
 
