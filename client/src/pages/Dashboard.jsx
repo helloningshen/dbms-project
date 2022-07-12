@@ -16,14 +16,10 @@ import { useEffect } from "react";
 const Dashboard = () => {
 
 
-    useEffect(() => {
-        console.log(location.pathname)
-    }, [])
-    // dropdown items
     const ddItems = [
         {
             id: 1,
-            title: "All Images",
+            title: "All Books",
             active: true
         },
         {
@@ -66,8 +62,8 @@ const Dashboard = () => {
             <div className="flex justify-content-center" style={{ marginTop: "50px", padding: '50px' }}>
                 <ContainerCard>
                     <div className={`${styles["gallery-setting"]} flex justify-content-between align-items-center`}>
-                        <h1>All images</h1>
-                        <Dropdown title="All Images" items={ddItems} liftingDdTextUp={takeDdTitle} />
+                        <h1>All Books</h1>
+                        <Dropdown title="All Books" items={ddItems} liftingDdTextUp={takeDdTitle} />
                     </div>
                     <MasonryLayout images={categoryImage} />
                 </ContainerCard>
