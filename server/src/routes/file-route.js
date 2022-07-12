@@ -52,11 +52,14 @@ const deleteFile = (req, res) => {
   });
 }
 
+const getFilesByTagName = () => { }
+
 fileRouter.post("/create/file", createFile)
 fileRouter.get("/get/file/:id", getFileById)
 fileRouter.get("/get/files", getFiles)
 fileRouter.put("/update/:id", updateFile)
 fileRouter.delete("/delete/file/:id", deleteFile)
+fileRouter.findByTag("/get/file/:tagname/all", getFilesByTagName)
 
 
 module.exports = { fileRouter };
