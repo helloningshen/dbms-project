@@ -1,15 +1,38 @@
 const express = require('express')
+const crypto = require("crypto");
+
+
 const { FileOperations } = require("../models/file.model")
+
 const fileRouter = express.Router()
 
 
 const createFile = async (req, res) => {
   if (!req.body) res.status(400).send({ err: "Content can not be empty!" });
-  FileOperations.insert(req.body, (err, data) => {
+
+  const { filename, name, author, semester, type, description, uploadedBy } = req.body
+
+
+  const newFile = {
+    id: crypto.randomBytes(16).toString("hex"),
+    filename,
+    name,
+    author,
+    semester,
+    type,
+    description,
+    file: req.files.file,
+    uploadedBy,
+    createdDate: new Date(),
+  }
+
+  FileOperations.insert(newFile, (err, data) => {
     if (err) res.status(500).send({ message: err.message || "Some error occurred while creating the Tutorial." });
     else res.send(data);
   });
 }
+
+
 
 const getFileById = (req, res) => {
   FileOperations.findOne(req.params.id, (err, data) => {
@@ -22,9 +45,14 @@ const getFileById = (req, res) => {
 
 
 const getFiles = (req, res) => {
+  console.log("fetching files.")
+
   FileOperations.findAll((err, data) => {
-    if (err) res.status(500).send({ message: err.message || "Some error occurred while retrieving files." });
-    else res.status(200).send(data);
+
+    data = Object.values(JSON.parse(JSON.stringify(data)))
+
+    if (err) return res.status(500).send({ message: err.message || "Some error occurred while retrieving files." });
+    res.status(200).send(data);
   });
 }
 
@@ -59,7 +87,7 @@ fileRouter.get("/get/file/:id", getFileById)
 fileRouter.get("/get/files", getFiles)
 fileRouter.put("/update/:id", updateFile)
 fileRouter.delete("/delete/file/:id", deleteFile)
-fileRouter.findByTag("/get/file/:tagname/all", getFilesByTagName)
+// fileRouter.findByTag("/get/file/:tagname/all", getFilesByTagName)
 
 
 module.exports = { fileRouter };

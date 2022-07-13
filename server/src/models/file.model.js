@@ -1,6 +1,8 @@
 const conn = require("../config/db-config")
 
-const FileOperations = function ({ name, author, type, semester, desc, file, uploadedBy, date }) {
+const FileOperations = function ({ id, filename, name, author, type, semester, desc, file, uploadedBy, date }) {
+  this.id = id;
+  this.filename = filename
   this.name = name;
   this.author = author;
   this.type = type;
@@ -12,12 +14,15 @@ const FileOperations = function ({ name, author, type, semester, desc, file, upl
 }
 
 FileOperations.insert = async (newFile, result) => {
+
   const response = (err, res) => {
     if (err) {
       result(err, null)
+
+      console.log(err)
       return
     }
-    result(null, { id: res.insertId, ...newFile });
+    result(null, { ...newFile });
   }
   conn.query("INSERT INTO files SET ?", newFile, response);
 }
