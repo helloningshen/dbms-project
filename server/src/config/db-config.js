@@ -19,8 +19,18 @@ const dbConfig = () => {
     console.log('Connected to the MySQL server.');
   });
 
-
-  var sql = `CREATE TABLE IF NOT EXISTS files (id varchar(250) not null, name VARCHAR(255), author VARCHAR(255), primary key(id))`;
+  var sql = `CREATE TABLE IF NOT EXISTS files 
+          (id varchar(250) not null, 
+          filename varchar(255) not null,
+          name VARCHAR(255) not null, 
+          author VARCHAR(255),
+          semester varchar(50), 
+          description varchar(225), 
+          type varchar(50), 
+          uploadedBy varchar(50), 
+          file blob not null,
+          createdDate Date, 
+          primary key(id))`;
 
   connection.query(sql, function (err, result) {
     if (err) throw err;
@@ -29,8 +39,6 @@ const dbConfig = () => {
 
   return connection
 }
-
-
 let conn = dbConfig()
 
 
