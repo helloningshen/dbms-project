@@ -4,7 +4,6 @@ import ContainerCard from '../Components/ContainerCard/ContainerCard';
 import ArchiveContent from './archive/ArchiveContent';
 import MainLayout from "../Components/Layout"
 import styles from "./Archive.module.css"
-import Modal from "../Components/Modal"
 
 const Archive = () => {
 	return (

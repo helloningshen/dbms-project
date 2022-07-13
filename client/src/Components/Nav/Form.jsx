@@ -1,16 +1,49 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
-import Input from "@mui/material/Input"
 import LoadingButton from '@mui/lab/LoadingButton';
+import { useDispatch, useSelector } from 'react-redux'
+import { submitFile } from '../../features/file-slice';
+import styles from "./Form.module.css"
 
 const Form = () => {
 
+  const dispatch = useDispatch()
+  const { formSubmitting } = useSelector(store => store.fileList)
 
-  const [loading, setLoading] = React.useState(false);
-  function handleClick() {
-    setLoading(true);
+  const [name, setName] = useState("");
+  const [author, setAuthor] = useState("");
+  const [type, setType] = useState("");
+  const [description, setDesc] = useState("");
+  const [semester, setSem] = useState("");
+  const [uploadedBy, setUploadedBy] = useState("Anonymous");
+  const [newFile, setNewFile] = useState("");
+
+
+
+
+  const handleFileChange = (e) => {
   }
+
+  const submitForm = () => {
+
+    const payload = {
+      name,
+      author,
+      type,
+      description,
+      semester,
+      uploadedBy,
+      file: newFile,
+    }
+
+    console.log(payload)
+
+    dispatch(submitFile(payload))
+
+    console.log(formSubmitting)
+  }
+
 
   return (
     <div className="textfields">
@@ -31,6 +64,8 @@ const Form = () => {
             type="text"
             autoComplete=""
             variant="standard"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
           />
 
 
@@ -40,14 +75,19 @@ const Form = () => {
             type="text"
             autoComplete=""
             variant="standard"
+            value={author}
+            onChange={(e) => setAuthor(e.target.value)}
 
           />
           <TextField
-            id=""
+
             label="Type of the Book (Dept)"
             type="text"
             autoComplete=""
             variant="standard"
+            value={type}
+            onChange={(e) => setType(e.target.value)}
+
           />
 
           <TextField
@@ -56,6 +96,9 @@ const Form = () => {
             type="text"
             autoComplete=""
             variant="standard"
+            value={semester}
+            onChange={(e) => setSem(e.target.value)}
+
           />
           <TextField
             id="description"
@@ -63,18 +106,35 @@ const Form = () => {
             type="text"
             autoComplete=""
             variant="standard"
+            value={description}
+            onChange={(e) => setDesc(e.target.value)}
+
           />
 
-          <label htmlFor="contained-button-file">
-            <Input accept="image/*" id="contained-button-file" multiple type="file" />
-          </label>
+          <TextField
+            id="uploadedBy"
+            label="Uploaded By"
+            type="text"
+            autoComplete=""
+            variant="standard"
+            disabled={true}
+            value={uploadedBy}
+            onChange={(e) => setUploadedBy(e.target.value)}
+
+          />
+
+          <div className={styles["upload-file"]}>
+            <label>Browse File</label>
+            <input type="file" onChange={(e) => setNewFile(e.target.files[0])} />
+
+          </div>
 
           <div style={{ display: "flex", textAlign: "center", justifyContent: "center", paddingTop: 16 }}>
             <LoadingButton
-              size="small"
+              size="large"
               color="secondary"
-              onClick={handleClick}
-              loading={loading}
+              onClick={submitForm}
+              loading={formSubmitting}
               loadingPosition="center"
               variant="contained"
             >
