@@ -3,6 +3,7 @@ import Dashboard from './pages/Dashboard'
 import Archive from "./pages/Archive"
 import Collections from './pages/Collections'
 import Authors from "./pages/Authors"
+import PdfPreview from "./pages/SinglePage"
 
 const routes = [
     {
@@ -29,7 +30,8 @@ const routes = [
         pathName: "/authors",
         component: Authors,
         exact: true,
-    }
+    },
+
 ]
 
 

@@ -5,6 +5,9 @@ import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import Typography from '@mui/material/Typography';
 import Button from "./Elements/Button/Button"
+import { useDispatch, useSelector } from 'react-redux';
+import { openModal, closeModal } from "../features/modal-slice"
+
 
 const style = {
     position: 'absolute',
@@ -19,9 +22,17 @@ const style = {
 };
 
 export default function TransitionsModal({ btn, children }) {
-    const [open, setOpen] = React.useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+    const dispatch = useDispatch()
+
+    const { open } = useSelector(store => store.modal)
+
+    const handleOpen = () => {
+        dispatch(openModal())
+        console.log(open)
+    }
+    const handleClose = () => {
+        dispatch(closeModal());
+    }
 
     return (
         <div>

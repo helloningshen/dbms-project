@@ -7,8 +7,9 @@ import Button from "../Button/Button"
 import file, { getFiles } from "../../../features/file-slice"
 
 // Dropdown Component
-const Dropdown = ({ title, liftingDdTextUp }) => {
-  const { files } = useSelector((store) => store.fileList);
+const Dropdown = ({ files, title, liftingDdTextUp }) => {
+
+
   const [ddTitle, setDdTitle] = useState(title)
 
   const ddItem = (ddId, ev) => {
@@ -27,6 +28,9 @@ const Dropdown = ({ title, liftingDdTextUp }) => {
     })
   }
 
+
+
+
   return (
     <div className={styles["dropdown"]}>
       <Button theme="transparent" className="flex align-items-center">
@@ -35,8 +39,10 @@ const Dropdown = ({ title, liftingDdTextUp }) => {
           <ArrowUp3 color="var(--green-400)" />
         </span>
       </Button>
+
       <ul className={styles["dropdown-menu"]}>
-        {files.map(item => (
+
+        {files && files.map(item => (
           <li
             key={item.id}
             className={`${styles["dropdown-item-menu"]}`}
@@ -45,7 +51,7 @@ const Dropdown = ({ title, liftingDdTextUp }) => {
           </li>
         ))}
       </ul>
-    </div>
+    </div >
   )
 }
 

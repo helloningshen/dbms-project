@@ -5,8 +5,14 @@ import ContainerCard from '../Components/ContainerCard/ContainerCard';
 import Dropdown from '../Components/Elements/Dropdown/Dropdown';
 import Header from "../Components/Header/Header";
 import images from "../Jsons/Images.json"
+import { useSelector } from "react-redux";
+
 
 const Dashboard = () => {
+
+    const { files } = useSelector((store) => store.fileList);
+
+
     const [categoryImage, setCategoryImage] = useState(images.categories.all)
     const takeDdTitle = (ddTitle) => {
         setCategoryImage(() => {
@@ -22,12 +28,17 @@ const Dashboard = () => {
         <>
             <Header />
             <div className="flex justify-content-center" style={{ marginTop: "50px", padding: '50px' }}>
+
+                <div style={{ color: "white" }}>
+
+
+                </div>
                 <ContainerCard>
                     <div className={`${styles["gallery-setting"]} flex justify-content-between align-items-center`}>
                         <h1>All Books</h1>
-                        <Dropdown title="All Books" liftingDdTextUp={takeDdTitle} />
+                        <Dropdown title="All Books" files={files} liftingDdTextUp={takeDdTitle} />
                     </div>
-                    <MasonryLayout images={categoryImage} />
+                    <MasonryLayout images={categoryImage} files={files} />
                 </ContainerCard>
             </div>
         </>

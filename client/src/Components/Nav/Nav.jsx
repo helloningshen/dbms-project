@@ -1,5 +1,5 @@
 // import styles of this component
-import React from 'react'
+import React, { useEffect } from 'react'
 import styles from "./Nav.module.css"
 
 // import other components
@@ -10,9 +10,12 @@ import { HambergerMenu } from "iconsax-react"
 import { Link } from "react-router-dom"
 import Form from './Form'
 import Login from "../../pages/Login"
+import { toast } from 'react-toastify'
+import { useDispatch, useSelector } from 'react-redux'
 
 // Nav component
 const Nav = () => {
+
 
 	return (
 		<nav className={`${styles.nav} flex align-items-center`}>

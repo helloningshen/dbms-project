@@ -1,14 +1,10 @@
 // import styles of this component
 import styles from "./MasonryLayout.module.css"
-
-// import other react pkg to use
 import Masonry from "react-masonry-css"
-
-// import other component to use
 import MasonryBox from './MasonryBox/MasonryBox';
 
 // MasonryLayout Component
-const MasonryLayout = ({ images }) => {
+const MasonryLayout = ({ images, files }) => {
   const breakpointColumnsObj = {
     default: 4,
     1100: 3,
@@ -22,13 +18,19 @@ const MasonryLayout = ({ images }) => {
       className={styles["my-masonry-grid"]}
       columnClassName={styles["my-masonry-grid_column"]}
     >
-      {images.map(item => (
-        <MasonryBox 
-          key={item.id} 
-          wallSrc={item.src} 
-          userProf={item.user.src} 
-          userName={item.user.name} 
-          userJob={item.user.job} 
+      {files.map(item => (
+        <MasonryBox
+          key={item.id}
+          filename={item.filename}
+          authorName={item.author}
+          type={item.type}
+          wallSrc={item.thumbnail.src}
+          userProf={item.thumbnail.user.src}
+          userName={item.thumbnail.user.name}
+          userJob={item.thumbnail.user.job}
+          id={item.id}
+          path={item.file_path}
+          mimetype={item.file_mimetype}
         />
       ))}
     </Masonry>
