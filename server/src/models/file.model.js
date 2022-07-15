@@ -1,6 +1,6 @@
 const conn = require("../config/db-config")
 
-const FileOperations = function ({ id, filename, name, author, type, semester, desc, file, uploadedBy, date }) {
+const FileOperations = function ({ id, filename, name, author, type, semester, desc, file, file_path, file_mimetype, uploadedBy, date }) {
   this.id = id;
   this.filename = filename
   this.name = name;
@@ -9,6 +9,8 @@ const FileOperations = function ({ id, filename, name, author, type, semester, d
   this.semester = semester;
   this.desc = desc;
   this.file = file;
+  this.file_path = file_path;
+  this.file_mimetype = file_mimetype;
   this.uploadedBy = uploadedBy;
   this.createdDate = date;
 }
@@ -39,7 +41,7 @@ FileOperations.findOne = async (id, result) => {
     }
     result({ kind: "not_found" }, null);
   }
-  conn.query(`SELECT * FROM files WHERE id = ${id}`, response)
+  conn.query(`SELECT * FROM files WHERE id = "${id}"`, response)
 }
 
 

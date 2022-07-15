@@ -1,20 +1,17 @@
 require('dotenv').config();
 const express = require('express')
 const cors = require("cors");
-const { json } = require('body-parser')
 const { fileRouter } = require('./routes/file-route');
+const { testRouter } = require("./routes/test-router")
 const app = express()
-const upload = require("express-fileupload");
 
-
-
-app.use(upload());
-
-
+app.use(express.static(`${__dirname}/public`))
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+
+app.use(testRouter)
 app.use(fileRouter)
 
 

@@ -29,6 +29,8 @@ const dbConfig = () => {
           type varchar(50), 
           uploadedBy varchar(50), 
           file blob not null,
+          file_path varchar(225) not null,
+          file_mimetype varchar(225),
           createdDate Date, 
           primary key(id))`;
 
