@@ -1,7 +1,4 @@
-require('dotenv').config();
-
-const mysql = require("mysql")
-
+import mysql from 'mysql2'
 const dbConfig = () => {
 
   let connection = mysql.createConnection({
@@ -21,17 +18,11 @@ const dbConfig = () => {
 
   var sql = `CREATE TABLE IF NOT EXISTS files 
           (id varchar(250) not null, 
-          filename varchar(255) not null,
           name VARCHAR(255) not null, 
+          originalFileName varchar(225) not null,
           author VARCHAR(255),
-          semester varchar(50), 
-          description varchar(225), 
-          type varchar(50), 
-          uploadedBy varchar(50), 
-          file blob not null,
-          file_path varchar(225) not null,
-          file_mimetype varchar(225),
-          createdDate Date, 
+          url varchar(225) not null,
+          s3Key varchar(225) not null,
           primary key(id))`;
 
   connection.query(sql, function (err, result) {
@@ -43,5 +34,4 @@ const dbConfig = () => {
 }
 let conn = dbConfig()
 
-
-module.exports = conn
+export { conn }

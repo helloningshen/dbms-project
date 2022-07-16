@@ -7,63 +7,90 @@ import { closeModal, openModal } from './modal-slice';
 const baseURL = "http://localhost:5000"
 
 const urls = {
-  fetchAll: `${baseURL}/get/files`,
+  fetchAll: `${baseURL}/docs`,
   insert: `${baseURL}/upload`,
-  download: `${baseURL}/file/download`,
-  success: false,
-  url: {}
+  download: `${baseURL}/download`,
+  info: `${baseURL}/info/save`,
 }
 
 
 const initialState = {
-  files: [],
-  file: {},
+  docs: [],
+  doc: {},
   formSubmitting: false,
   isLoading: false,
+  url: {},
+  uploaded: false,
+  currentUrl: ""
 };
 
 
-export const submitFile = createAsyncThunk(
-  'file/submitFile',
 
-  async (payload, thunkAPI) => {
-    setTimeout(() => {
-      try {
-        const { name, author, type, description, semester, uploadedBy, file } = payload;
-        const formData = new FormData();
-        formData.append('file', file);
-        formData.append('filename', file.name);
-        formData.append("name", name);
-        formData.append("author", author);
-        formData.append("type", type)
-        formData.append("description", description)
-        formData.append("semester", semester);
-        formData.append("uploadedBy", uploadedBy)
-        fetch(urls.insert, {
-          method: "POST",
-          body: formData,
-        })
-        return res.data
-      } catch (err) {
-        return thunkAPI.rejectWithValue("Something went wrong.")
-      }
-    }, 3000)
-  }
-)
 
-export const downloadOne = createAsyncThunk(
-  'file/download',
-  async (payload, thunkAPI) => {
+export const fetchDocs = createAsyncThunk(
+  'fetchDocs',
+  async (name, thunkAPI) => {
     try {
-      const result = await axios.get(`${urls.download}/${payload.id}`, { responseType: 'blob' });
-      const split = payload.path.split('/');
-      const filename = split[split.length - 1];
-      download(result.data, filename, payload.mimetype);
+      const resp = await axios.get(urls.fetchAll);
+      resp.data.forEach(file => {
+        file.thumbnail = images.categories.all[Math.floor(Math.random() * 6)];
+        return file;
+      })
+      console.log(resp.data)
+      return resp.data;
     } catch (error) {
       return thunkAPI.rejectWithValue('something went wrong');
     }
   }
 );
+
+
+
+
+export const uploadDoc = createAsyncThunk(
+  'uploadDoc',
+  async (payload, thunkAPI) => {
+    try {
+      const { file } = payload;
+      const formData = new FormData();
+      formData.append('file', file);
+      const res = await axios.post(urls.insert, formData)
+      return res.data
+    } catch (err) {
+      return thunkAPI.rejectWithValue("Something went wrong.")
+    }
+  }
+)
+
+
+export const saveInfo = createAsyncThunk(
+  'saveInfo',
+  async (payload, thunkAPI) => {
+    try {
+      console.log(payload)
+      const res = await axios.post(urls.info, payload);
+      console.log(res)
+    } catch (err) { console.log(err) }
+  }
+)
+
+
+export const downloadOne = createAsyncThunk(
+  'file/download',
+  async (payload, thunkAPI) => {
+    try {
+      console.log("called")
+      const result = await axios.get(`${urls.download}/${payload.id}`);
+      return result.data.url
+    } catch (error) {
+      return thunkAPI.rejectWithValue('something went wrong');
+    }
+  }
+);
+
+
+
+
 
 
 
@@ -86,26 +113,6 @@ export const fetchOne = createAsyncThunk(
 
 
 
-export const getFiles = createAsyncThunk(
-  'file/getFiles',
-  async (name, thunkAPI) => {
-    try {
-      const resp = await axios.get(urls.fetchAll);
-
-      resp.data.forEach(file => {
-        file.thumbnail = images.categories.all[Math.floor(Math.random() * 6)];
-        return file;
-      })
-
-      return resp.data;
-
-    } catch (error) {
-      return thunkAPI.rejectWithValue('something went wrong');
-    }
-  }
-);
-
-
 
 
 const fileSlice = createSlice({
@@ -115,49 +122,59 @@ const fileSlice = createSlice({
     stopLoading: (state) => {
       state.formSubmitting = false
     },
-
-
   },
 
 
   extraReducers: {
-    [getFiles.pending]: (state) => {
+    [fetchDocs.pending]: (state) => {
       state.isLoading = true;
     },
-    [getFiles.fulfilled]: (state, action) => {
+    [fetchDocs.fulfilled]: (state, action) => {
       // state.isLoading = false;
-      state.files = action.payload;
+      state.docs = action.payload;
     },
-    [getFiles.rejected]: (state, action) => {
+    [fetchDocs.rejected]: (state, action) => {
       state.isLoading = false;
     },
 
-    [submitFile.pending]: (state) => {
-      console.log("pen")
-      state.formSubmitting = true
-      state.success = false
-    },
-    [submitFile.fulfilled]: (state) => {
-      console.log("ful")
-      state.success = true
-      state.formSubmitting = true
-    },
-    [submitFile.rejected]: state => {
-      state.success = false
-      state.formSubmitting = true
+    [uploadDoc.pending]: (state) => {
+
     },
 
+    [uploadDoc.fulfilled]: (state, action) => {
+      state.url = action.payload
+      state.uploaded = true
+    },
+
+    [saveInfo.pending]: (state) => {
+      state.formSubmitting = true
+      state.success = false
+    },
+    [saveInfo.fulfilled]: (state, action) => {
+      state.success = true
+      state.formSubmitting = true
+      state.url = {}
+      console.log("s", state.docs)
+    },
+
+    [saveInfo.rejected]: state => {
+      state.success = false
+      state.formSubmitting = true
+      // },
+    },
 
     [fetchOne.fulfilled]: (state, action) => {
       console.log(action.payload)
       state.url = action.payload
     },
-
+    [downloadOne.fulfilled]: (state, action) => {
+      state.currentUrl = action.payload
+    }
   },
 });
 
 // console.log(cartSlice);
-export const { stopLoading, openPdfViewer } =
+export const { downloadDoc, stopLoading, openPdfViewer } =
   fileSlice.actions;
 
 export default fileSlice.reducer;

@@ -1,21 +1,22 @@
-// import styles of this component
 import React, { useEffect } from 'react'
 import styles from "./Nav.module.css"
-
-// import other components
 import Button1 from "../Elements/Button/Button"
 import Modal from "../Modal"
-// import other react pkg to use
-import { HambergerMenu } from "iconsax-react"
-import { Link } from "react-router-dom"
 import Form from './Form'
-import Login from "../../pages/Login"
-import { toast } from 'react-toastify'
+
+
+import { Link } from "react-router-dom"
+import { HambergerMenu } from "iconsax-react"
 import { useDispatch, useSelector } from 'react-redux'
+import { openFormModal } from '../../features/modal-slice'
 
-// Nav component
 const Nav = () => {
+	const { formModal } = useSelector(store => store.modal)
+	const dispatch = useDispatch()
 
+	const handleOpenModal = () => {
+		dispatch(openFormModal())
+	}
 
 	return (
 		<nav className={`${styles.nav} flex align-items-center`}>
@@ -24,7 +25,6 @@ const Nav = () => {
 				<li className={`${styles["nav-item"]} ${styles.active}`}>
 					<Link to="/" className={`${styles["nav-link"]}`}>Home</Link>
 				</li>
-
 
 				<li className={styles["nav-item"]}>
 					<Link to="/collections" className={styles["nav-link"]}>
@@ -51,11 +51,11 @@ const Nav = () => {
 				</li>
 			</ul>
 			<div className={`flex ${styles["navbar-buttons"]}`}>
-				<Modal
-					btn="UPLOAD FILE"
-				>
+				<Modal open={formModal} btn="Upload Button">
 					<Form />
 				</Modal>
+				<Button1 theme="primary" onClick={() => handleOpenModal()}>Upload</Button1>
+
 				<Link to="/signin">
 					<Button1 theme="transparent">Login</Button1>
 				</Link>

@@ -1,26 +1,23 @@
-const conn = require("../config/db-config")
+import { conn } from "../db-config.js"
 
-const FileOperations = function ({ id, filename, name, author, type, semester, desc, file, file_path, file_mimetype, uploadedBy, date }) {
+
+const FileModel = function ({ id, name, author, type, semester, desc, uploadedBy, date, url }) {
   this.id = id;
-  this.filename = filename
   this.name = name;
   this.author = author;
   this.type = type;
   this.semester = semester;
   this.desc = desc;
-  this.file = file;
-  this.file_path = file_path;
-  this.file_mimetype = file_mimetype;
   this.uploadedBy = uploadedBy;
   this.createdDate = date;
+  this.url = url
 }
 
-FileOperations.insert = async (newFile, result) => {
+FileModel.insert = async (newFile, result) => {
 
   const response = (err, res) => {
     if (err) {
       result(err, null)
-
       console.log(err)
       return
     }
@@ -29,7 +26,7 @@ FileOperations.insert = async (newFile, result) => {
   conn.query("INSERT INTO files SET ?", newFile, response);
 }
 
-FileOperations.findOne = async (id, result) => {
+FileModel.findOne = async (id, result) => {
   const response = (err, res) => {
     if (err) {
       result(err, null);
@@ -45,11 +42,12 @@ FileOperations.findOne = async (id, result) => {
 }
 
 
-FileOperations.findAll = async (result) => {
+FileModel.findAll = async (result) => {
   let query = "SELECT * FROM files;";
   const response = (err, res) => {
     if (err) {
       console.log("error: ", err);
+      const { FileModel } = require("./file-model")
       result(null, err);
       return;
     }
@@ -58,7 +56,7 @@ FileOperations.findAll = async (result) => {
   conn.query(query, response);
 }
 
-FileOperations.updateById = async (file, result) => {
+FileModel.updateById = async (file, result) => {
 
   const response = (err, res) => {
     if (err) {
@@ -73,13 +71,11 @@ FileOperations.updateById = async (file, result) => {
 
 
 
-FileOperations.remove = async (id, result) => {
+FileModel.remove = async (id, result) => {
   const response = (err, res) => {
     if (err) {
       result(null, err);
-      return;
-    }
-    if (res.affectedRows == 0) {
+
       result({ kind: "not_found" }, null);
       return;
     }
@@ -89,4 +85,4 @@ FileOperations.remove = async (id, result) => {
 }
 
 
-module.exports = { FileOperations }
+export { FileModel }

@@ -2,7 +2,8 @@ import { createSlice } from '@reduxjs/toolkit'
 
 
 const initialState = {
-  open: false,
+  formModal: false,
+  downloadModal: false,
 }
 
 
@@ -11,16 +12,24 @@ export const modalSlice = createSlice({
   name: "modalops",
   initialState,
   reducers: {
-    closeModal: (state) => {
-      state.open = false
+    closeDownloadModal: (state) => {
+      state.downloadModal = false
     },
-    openModal: (state) => {
-      state.open = true
+    openDownloadModal: (state) => {
+      state.downloadModal = true
+    },
+
+    closeFormModal: (state) => {
+      state.formModal = false
+    },
+    openFormModal: (state) => {
+      state.formModal = true
     }
+
   }
 })
 
 
-export const { closeModal, openModal } = modalSlice.actions
+export const { closeFormModal, openFormModal, closeDownloadModal, openDownloadModal } = modalSlice.actions
 
 export default modalSlice.reducer

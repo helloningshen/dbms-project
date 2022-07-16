@@ -1,35 +1,43 @@
 // import styles of this component
 import styles from "./MasonryBox.module.css"
 import { PropTypes } from 'prop-types';
+import { Link } from "react-router-dom"
 import DownloadIcon from '@mui/icons-material/Download';
 import Button from "@mui/material/Button"
-import { Link } from 'react-router-dom'
-import { useDispatch } from "react-redux"
-import { downloadF } from "../../../features/file-slice"
+
+
+import { useDispatch, useSelector } from "react-redux"
 import { downloadOne, fetchOne } from "../../../features/file-slice";
-
-
-import store from "../../../store"
-// MasonryBox component
-const MasonryBox = ({ filename, wallSrc, userProf, authorName, type, id, path, mimetype }) => {
-
+import { closeDownloadModal, openDownloadModal } from "../../../features/modal-slice"
+import Modal from "../../Modal"
+const MasonryBox = ({ filename, wallSrc, userProf, authorName, type, id, url }) => {
+  const { downloadModal } = useSelector(store => store.modal)
+  const { currentUrl } = useSelector(store => store.fileList)
   const dispatch = useDispatch()
-  const downloadFile = (id, path, mimetype) => {
-    dispatch(downloadOne({ id, path, mimetype }))
+
+
+  const downloadDocument = (id, url) => {
+    dispatch(downloadOne({ id, path: url, mimetype: "application/pdf" }))
+    dispatch(openDownloadModal())
   }
-  const openSingle = (id, path, mimetype) => {
-    dispatch(fetchOne({ id, path, mimetype }))
-    // window.location.href = "/single"
-  }
+
+
+
+
+  const handleCloseModal = () => dispatch(closeDownloadModal())
+
   return (
-    <button onClick={() => openSingle(id, path, mimetype)}>
+    <Link to={`/single/${id}`}>
+      <Modal open={downloadModal} btn={"Download File."}>
+        <div>
+          <a href={currentUrl} target="_blank" onClick={handleCloseModal}>Download Your file</a>
+        </div>
+      </Modal>
       <div className={styles["my-masonry"]}>
         <img src={wallSrc} style={{ width: "100%" }} alt="" />
         <div className={`${styles["my-masnry-description"]} flex`}>
           <div className={`${styles["my-masnry-user-box"]} flex align-items-center`}>
             <div className={styles["my-masnry-user-prof"]}>
-
-
               <img src={userProf} alt="" />
             </div>
             <div className={`${styles["my-masnry-user-prof-desc"]} flex flex-column`}>
@@ -37,17 +45,15 @@ const MasonryBox = ({ filename, wallSrc, userProf, authorName, type, id, path, m
               <h1>{authorName}</h1>
               <h3>{type}</h3>
             </div>
-
             <div style={{ float: "right", color: "red" }}>
-
-              <Button onClick={() => downloadFile(id, path, mimetype)}>
+              <Button onClick={() => downloadDocument(id, url)}>
                 <DownloadIcon />
               </Button>
             </div>
           </div>
         </div>
       </div>
-    </button>
+    </Link>
   )
 }
 
