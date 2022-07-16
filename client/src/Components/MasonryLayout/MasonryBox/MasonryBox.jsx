@@ -5,7 +5,7 @@ import { Link } from "react-router-dom"
 import DownloadIcon from '@mui/icons-material/Download';
 import Button from "@mui/material/Button"
 
-
+import ChromeReaderModeIcon from '@mui/icons-material/ChromeReaderMode';
 import { useDispatch, useSelector } from "react-redux"
 import { downloadOne, fetchOne } from "../../../features/file-slice";
 import { closeDownloadModal, openDownloadModal } from "../../../features/modal-slice"
@@ -27,7 +27,7 @@ const MasonryBox = ({ filename, wallSrc, userProf, authorName, type, id, url }) 
   const handleCloseModal = () => dispatch(closeDownloadModal())
 
   return (
-    <Link to={`/single/${id}`}>
+    <>
       <Modal open={downloadModal} btn={"Download File."}>
         <div>
           <a href={currentUrl} target="_blank" onClick={handleCloseModal}>Download Your file</a>
@@ -50,10 +50,17 @@ const MasonryBox = ({ filename, wallSrc, userProf, authorName, type, id, url }) 
                 <DownloadIcon />
               </Button>
             </div>
+
+            <div style={{ float: "right", color: "white" }}>
+              <Link to={`/single/${id}`}>
+                <ChromeReaderModeIcon />
+              </Link>
+            </div>
           </div>
         </div>
       </div>
-    </Link>
+
+    </>
   )
 }
 

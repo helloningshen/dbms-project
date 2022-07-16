@@ -1,6 +1,1 @@
-import { toast } from 'react-toastify'
-
-
-export function notify(text) {
-  toast.dark(text);
-}
+export const notify = (text, stat) => toast[stat](text);

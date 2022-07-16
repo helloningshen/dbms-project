@@ -8,12 +8,12 @@ import Grid from "@mui/material/Grid"
 
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux';
-import { login, startLoginLoading } from "../features/auth-slice"
+import { register, startRegisterLoading } from "../features/auth-slice"
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-export default function Login() {
-  const { loginSubmittingForm } = useSelector(store => store.auth)
+export default function Register() {
+  const { registerSubmittingForm } = useSelector(store => store.auth)
 
   const dispatch = useDispatch()
 
@@ -30,13 +30,13 @@ export default function Login() {
 
 
   const handleSubmit = () => {
-    dispatch(startLoginLoading())
+    dispatch(startLRegisterLoading())
     const payload = {
       email,
       password,
     }
-    dispatch(login(payload))
-
+    dispatch(register(payload))
+    window.location.href = "/signin"
   }
   return (
     <>
@@ -44,12 +44,11 @@ export default function Login() {
       <div className={styles["content"]}>
         <div className={styles["login_form"]}>
           <Link to="/">
-            <Button theme="primary">
+            <Button theme="transparent">
               <ArrowBackIosIcon />
             </Button>
           </Link>
-          <h1 style={{ textAlign: "center", fontSize: 25, fontWeight: "bold" }}>Sign In</h1>
-
+          <h1 style={{ textAlign: "center", fontSize: 25, fontWeight: "bold" }}>Register</h1>
           <Grid
             container
             spacing={0}
@@ -86,6 +85,17 @@ export default function Login() {
               />
             </div>
 
+            <div>
+              <TextField
+                required
+                id="outlined-required"
+                label="Confirm Password"
+                value={confirmPassword}
+                type="password"
+                onChange={e => setConfirmPassword(e.target.value)}
+                onMouseLeave={handleMouseLeave}
+              />
+            </div>
 
             <div>
               <LoadingButton
@@ -93,17 +103,15 @@ export default function Login() {
                 size="large"
                 color="secondary"
                 onClick={handleSubmit}
-                loading={loginSubmittingForm}
+                loading={registerSubmittingForm}
                 loadingPosition="center"
                 variant="contained"
               >
-                Login
+                Register
               </LoadingButton>
-
-
             </div>
-            <div style={{ position: "absolute", bottom: 50, right: 50 }}>
-              <Link to="/register">Don't have an account? Register</Link>
+            <div style={{ position: "absolute", bottom: 25, right: 50 }}>
+              <Link to="/signin" style={{}}>Have an Account? Login</Link>
             </div>
           </Grid>
         </div >

@@ -4,12 +4,19 @@ import Archive from "./pages/Archive"
 import Collections from './pages/Collections'
 import Authors from "./pages/Authors"
 import PdfPreview from "./pages/Pdf-Preview"
+import Register from "./pages/Register"
+
 
 const routes = [
     {
         pathName: "/signin",
         component: SignIn,
         exact: true
+    },
+    {
+        pathName: "/register",
+        component: Register,
+        exact: true,
     },
     {
         pathName: "/",
