@@ -1,23 +1,20 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import routes from './routes'
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { fetchDocs } from './features/file-slice';
-import { ToastContainer } from 'react-toastify'
+import routes from './routes'
+
+
+
 const App = () => {
 
-  const { show } = useSelector(store => store.toast)
   const dispatch = useDispatch()
   useEffect(() => {
     dispatch(fetchDocs())
   }, [])
 
   return (
-    // <SinglePage />
     <Router>
-      {
-        show && <ToastContainer />
-      }
       <Routes>
         {
           routes.map((route, idx) => {

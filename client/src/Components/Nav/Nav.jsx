@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from "./Nav.module.css"
 import Button1 from "../Elements/Button/Button"
 import Modal from "../Modal"
@@ -11,12 +11,20 @@ import { useDispatch, useSelector } from 'react-redux'
 import { openFormModal } from '../../features/modal-slice'
 
 const Nav = () => {
+	const [auth, setAuth] = useState();
+	const [user, setUser] = useState();
 	const { formModal } = useSelector(store => store.modal)
 	const dispatch = useDispatch()
 
 	const handleOpenModal = () => {
 		dispatch(openFormModal())
 	}
+
+	useEffect(() => {
+		const user = JSON.parse(localStorage.getItem("user"))
+		setUser(user)
+		if (user.accessToken) setAuth(true)
+	}, [])
 
 	return (
 		<nav className={`${styles.nav} flex align-items-center`}>
@@ -56,18 +64,28 @@ const Nav = () => {
 				</Modal>
 				<Button1 theme="primary" onClick={() => handleOpenModal()}>Upload</Button1>
 
-				<Link to="/signin">
-					<Button1 theme="transparent">Login</Button1>
-				</Link>
+				{
+					!auth && <>	<Link to="/signin">
+						<Button1 theme="transparent">Login</Button1>
+					</Link>
 
-				<Button1 theme="matrix">Sign up</Button1>
+						<Link to="/register">
+							<Button1 theme="matrix">Sign up</Button1>
+						</Link></>
+				}
+				{
+					auth &&
+					<Button1 theme="matrix" >{user.data.email}</Button1>
+				}
+
 			</div>
+
 			<div className={styles["navbar-responsive-menu"]}>
 				<Button1 theme="transparent">
 					<HambergerMenu size="32" color="var(--white-100)" />
 				</Button1>
 			</div>
-		</nav>
+		</nav >
 	)
 }
 

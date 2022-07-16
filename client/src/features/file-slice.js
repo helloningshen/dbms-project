@@ -1,9 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import images from "../Jsons/Images.json"
-import download from "downloadjs"
 
-import { closeModal, openModal } from './modal-slice';
 const baseURL = "http://localhost:5000"
 
 const urls = {

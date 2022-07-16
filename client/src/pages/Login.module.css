@@ -10,7 +10,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: var(--colour-one);
+  background: white;
 }
 
 .login_form {
