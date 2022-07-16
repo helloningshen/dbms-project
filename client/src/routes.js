@@ -3,6 +3,7 @@ import Dashboard from './pages/Dashboard'
 import Archive from "./pages/Archive"
 import Collections from './pages/Collections'
 import Authors from "./pages/Authors"
+import PdfPreview from "./pages/Pdf-Preview"
 
 const routes = [
     {
@@ -28,6 +29,11 @@ const routes = [
     {
         pathName: "/authors",
         component: Authors,
+        exact: true,
+    },
+    {
+        pathName: "/single/:id",
+        component: PdfPreview,
         exact: true,
     }
 ]

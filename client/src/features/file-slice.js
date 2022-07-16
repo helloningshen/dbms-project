@@ -1,111 +1,180 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+import images from "../Jsons/Images.json"
+import download from "downloadjs"
 
+import { closeModal, openModal } from './modal-slice';
 const baseURL = "http://localhost:5000"
 
 const urls = {
-  fetchAll: `${baseURL}/get/files`,
-  insert: `${baseURL}/create/file`
+  fetchAll: `${baseURL}/docs`,
+  insert: `${baseURL}/upload`,
+  download: `${baseURL}/download`,
+  info: `${baseURL}/info/save`,
 }
 
 
 const initialState = {
-  files: [],
+  docs: [],
+  doc: {},
   formSubmitting: false,
+  isLoading: false,
+  url: {},
+  uploaded: false,
+  currentUrl: ""
 };
 
 
-export const submitFile = createAsyncThunk(
-  'file/submitFile',
-
-  async (payload, thunkAPI) => {
-    try {
-      const { name, author, type, description, semester, uploadedBy, file } = payload;
-      const formData = new FormData();
-      formData.append('file', file);
-      formData.append('filename', file.name);
-      formData.append("name", name);
-      formData.append("author", author);
-      formData.append("type", type)
-      formData.append("description", description)
-      formData.append("semester", semester);
-      formData.append("uploadedBy", uploadedBy)
-
-      fetch(urls.insert, {
-        method: "POST",
-        body: formData,
-      })
-      return res.data
-    } catch (err) {
-      return thunkAPI.rejectWithValue("Something went wrong.")
-    }
-  }
-
-)
 
 
-export const getFiles = createAsyncThunk(
-  'file/getFiles',
+export const fetchDocs = createAsyncThunk(
+  'fetchDocs',
   async (name, thunkAPI) => {
     try {
       const resp = await axios.get(urls.fetchAll);
+      resp.data.forEach(file => {
+        file.thumbnail = images.categories.all[Math.floor(Math.random() * 6)];
+        return file;
+      })
+      console.log(resp.data)
       return resp.data;
-
     } catch (error) {
       return thunkAPI.rejectWithValue('something went wrong');
     }
   }
 );
 
+
+
+
+export const uploadDoc = createAsyncThunk(
+  'uploadDoc',
+  async (payload, thunkAPI) => {
+    try {
+      const { file } = payload;
+      const formData = new FormData();
+      formData.append('file', file);
+      const res = await axios.post(urls.insert, formData)
+      return res.data
+    } catch (err) {
+      return thunkAPI.rejectWithValue("Something went wrong.")
+    }
+  }
+)
+
+
+export const saveInfo = createAsyncThunk(
+  'saveInfo',
+  async (payload, thunkAPI) => {
+    try {
+      console.log(payload)
+      const res = await axios.post(urls.info, payload);
+      console.log(res)
+    } catch (err) { console.log(err) }
+  }
+)
+
+
+export const downloadOne = createAsyncThunk(
+  'file/download',
+  async (payload, thunkAPI) => {
+    try {
+      console.log("called")
+      const result = await axios.get(`${urls.download}/${payload.id}`);
+      return result.data.url
+    } catch (error) {
+      return thunkAPI.rejectWithValue('something went wrong');
+    }
+  }
+);
+
+
+
+
+
+
+
+export const fetchOne = createAsyncThunk(
+  'file/display',
+  async (payload, thunkAPI) => {
+    try {
+      console.log("fetching")
+      const result = await axios.get(`${urls.download}/${payload.id}`, { responseType: 'blob' });
+      console.log(result, result.data.size)
+      const res = { size: result.data.size, type: result.data.type }
+      return res
+    } catch (error) {
+      return thunkAPI.rejectWithValue('something went wrong');
+    }
+  }
+);
+
+
+
+
+
+
+
 const fileSlice = createSlice({
   name: 'fileops',
   initialState,
   reducers: {
-    clearFiles: (state) => {
-      state.cartItems = [];
-    },
-    removeFile: (state, action) => {
-      const itemId = action.payload;
-      state.cartItems = state.cartItems.filter((item) => item.id !== itemId);
-    },
-    increase: (state, { payload }) => {
-      const cartItem = state.cartItems.find((item) => item.id === payload.id);
-      cartItem.amount = cartItem.amount + 1;
-    },
-    decrease: (state, { payload }) => {
-      const cartItem = state.cartItems.find((item) => item.id === payload.id);
-      cartItem.amount = cartItem.amount - 1;
+    stopLoading: (state) => {
+      state.formSubmitting = false
     },
   },
+
+
   extraReducers: {
-    [getFiles.pending]: (state) => {
+    [fetchDocs.pending]: (state) => {
       state.isLoading = true;
     },
-    [getFiles.fulfilled]: (state, action) => {
+    [fetchDocs.fulfilled]: (state, action) => {
       // state.isLoading = false;
-      state.files = action.payload;
+      state.docs = action.payload;
     },
-    [getFiles.rejected]: (state, action) => {
+    [fetchDocs.rejected]: (state, action) => {
       state.isLoading = false;
     },
 
-    [submitFile.pending]: (state) => {
-      console.log("pending")
+    [uploadDoc.pending]: (state) => {
+
+    },
+
+    [uploadDoc.fulfilled]: (state, action) => {
+      state.url = action.payload
+      state.uploaded = true
+    },
+
+    [saveInfo.pending]: (state) => {
       state.formSubmitting = true
+      state.success = false
     },
-    [submitFile.fulfilled]: (state) => {
-      console.log("full")
-      state.formSubmitting = false
+    [saveInfo.fulfilled]: (state, action) => {
+      state.success = true
+      state.formSubmitting = true
+      state.url = {}
+      console.log("s", state.docs)
     },
-    [submitFile.rejected]: state => {
-      console.log("rej")
-      state.formSubmitting = false
+
+    [saveInfo.rejected]: state => {
+      state.success = false
+      state.formSubmitting = true
+      // },
+    },
+
+    [fetchOne.fulfilled]: (state, action) => {
+      console.log(action.payload)
+      state.url = action.payload
+    },
+    [downloadOne.fulfilled]: (state, action) => {
+      state.currentUrl = action.payload
     }
   },
 });
 
 // console.log(cartSlice);
-export const { clearFiles, removeFile, increase, decrease } =
+export const { downloadDoc, stopLoading, openPdfViewer } =
   fileSlice.actions;
 
 export default fileSlice.reducer;

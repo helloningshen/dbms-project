@@ -5,6 +5,9 @@ import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import Typography from '@mui/material/Typography';
 import Button from "./Elements/Button/Button"
+import { useDispatch, useSelector } from 'react-redux';
+import { closeDownloadModal, closeFormModal } from "../features/modal-slice"
+
 
 const style = {
     position: 'absolute',
@@ -18,14 +21,14 @@ const style = {
     p: 4,
 };
 
-export default function TransitionsModal({ btn, children }) {
-    const [open, setOpen] = React.useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
-
+export default function TransitionsModal({ open, btn, children }) {
+    const dispatch = useDispatch()
+    const handleClose = () => {
+        dispatch(closeDownloadModal());
+        dispatch(closeFormModal())
+    }
     return (
         <div>
-            <Button theme="primary  " onClick={handleOpen}>{btn}</Button>
             <Modal
                 aria-labelledby="transition-modal-title"
                 aria-describedby="transition-modal-description"
