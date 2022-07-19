@@ -1,44 +1,12 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-import images from "../Jsons/Images.json"
-
-const baseURL = "http://localhost:5000"
-
-const urls = {
-  fetchAll: `${baseURL}/docs`,
-  insert: `${baseURL}/upload`,
-  download: `${baseURL}/download`,
-  info: `${baseURL}/info/save`,
-  archive: `${baseURL}/archive`,
-  delete: `${baseURL}/delete`
-}
-
-
-const initialState = {
-  docs: [],
-  doc: {},
-  archive: [],
-  formSubmitting: false,
-  isLoading: false,
-  url: {},
-  uploaded: false,
-  currentUrl: "",
-  isUploading: false,
-  success: false,
-};
-
-
-
+import { urls, initialState } from "./helper/util"
 
 export const fetchDocs = createAsyncThunk(
   'fetchDocs',
   async (name, thunkAPI) => {
     try {
       const resp = await axios.get(urls.fetchAll);
-      resp.data.forEach(file => {
-        file.thumbnail = images.categories.all[Math.floor(Math.random() * 6)];
-        return file;
-      })
       return resp.data;
     } catch (error) {
       return thunkAPI.rejectWithValue('something went wrong');
