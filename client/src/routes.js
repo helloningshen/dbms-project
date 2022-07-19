@@ -1,10 +1,8 @@
-import SignIn from "./pages/Login"
-import Dashboard from './pages/Dashboard'
-import Archive from "./pages/Archive"
-import Collections from './pages/Collections'
-import Authors from "./pages/Authors"
-import PdfPreview from "./pages/Pdf-Preview"
-import Register from "./pages/Register"
+import SignIn from "./pages/login"
+import Dashboard from './pages/dashboard'
+import Archive from "./pages/archive"
+import PdfPreview from "./pages/pdf-viewer"
+import Register from "./pages/register"
 
 
 const routes = [
@@ -28,16 +26,8 @@ const routes = [
         component: Archive,
         exact: true
     },
-    {
-        pathName: "/collections",
-        component: Collections,
-        exact: true,
-    },
-    {
-        pathName: "/authors",
-        component: Authors,
-        exact: true,
-    },
+
+
     {
         pathName: "/single/:id",
         component: PdfPreview,

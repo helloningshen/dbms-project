@@ -1,13 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { urls } from "./helper/util"
 
-
-const baseURL = "http://localhost:5000"
-
-const urls = {
-  register: `${baseURL}/user/register`,
-  login: `${baseURL}/user/login`
-}
 
 
 
