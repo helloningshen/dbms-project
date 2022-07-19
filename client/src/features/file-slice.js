@@ -9,17 +9,22 @@ const urls = {
   insert: `${baseURL}/upload`,
   download: `${baseURL}/download`,
   info: `${baseURL}/info/save`,
+  archive: `${baseURL}/archive`,
+  delete: `${baseURL}/delete`
 }
 
 
 const initialState = {
   docs: [],
   doc: {},
+  archive: [],
   formSubmitting: false,
   isLoading: false,
   url: {},
   uploaded: false,
-  currentUrl: ""
+  currentUrl: "",
+  isUploading: false,
+  success: false,
 };
 
 
@@ -34,15 +39,12 @@ export const fetchDocs = createAsyncThunk(
         file.thumbnail = images.categories.all[Math.floor(Math.random() * 6)];
         return file;
       })
-      console.log(resp.data)
       return resp.data;
     } catch (error) {
       return thunkAPI.rejectWithValue('something went wrong');
     }
   }
 );
-
-
 
 
 export const uploadDoc = createAsyncThunk(
@@ -65,9 +67,7 @@ export const saveInfo = createAsyncThunk(
   'saveInfo',
   async (payload, thunkAPI) => {
     try {
-      console.log(payload)
       const res = await axios.post(urls.info, payload);
-      console.log(res)
     } catch (err) { console.log(err) }
   }
 )
@@ -77,7 +77,6 @@ export const downloadOne = createAsyncThunk(
   'file/download',
   async (payload, thunkAPI) => {
     try {
-      console.log("called")
       const result = await axios.get(`${urls.download}/${payload.id}`);
       return result.data.url
     } catch (error) {
@@ -87,27 +86,16 @@ export const downloadOne = createAsyncThunk(
 );
 
 
-
-
-
-
-
-export const fetchOne = createAsyncThunk(
-  'file/display',
-  async (payload, thunkAPI) => {
+export const deleteItem = createAsyncThunk(
+  "delete",
+  async (id, thunkAPI) => {
     try {
-      console.log("fetching")
-      const result = await axios.get(`${urls.download}/${payload.id}`, { responseType: 'blob' });
-      console.log(result, result.data.size)
-      const res = { size: result.data.size, type: result.data.type }
-      return res
-    } catch (error) {
-      return thunkAPI.rejectWithValue('something went wrong');
-    }
+      console.log("requesting", id)
+      const res = await axios.delete(`${urls.delete}/${id}`)
+      console.log(res)
+    } catch (err) { }
   }
-);
-
-
+)
 
 
 
@@ -117,18 +105,20 @@ const fileSlice = createSlice({
   name: 'fileops',
   initialState,
   reducers: {
-    stopLoading: (state) => {
+    stopFormLoader: (state) => {
       state.formSubmitting = false
     },
-  },
 
+    storeArchive: (state, action) => {
+      state.archive = state.docs.filter(file => file.bookType != "other")
+    },
+  },
 
   extraReducers: {
     [fetchDocs.pending]: (state) => {
       state.isLoading = true;
     },
     [fetchDocs.fulfilled]: (state, action) => {
-      // state.isLoading = false;
       state.docs = action.payload;
     },
     [fetchDocs.rejected]: (state, action) => {
@@ -139,9 +129,17 @@ const fileSlice = createSlice({
 
     },
 
+    [uploadDoc.pending]: (state, action) => {
+      state.isUploading = true
+    },
     [uploadDoc.fulfilled]: (state, action) => {
       state.url = action.payload
       state.uploaded = true
+      state.isUploading = false
+    },
+
+    [uploadDoc.rejected]: (state) => {
+      state.isUploading = false
     },
 
     [saveInfo.pending]: (state) => {
@@ -150,21 +148,16 @@ const fileSlice = createSlice({
     },
     [saveInfo.fulfilled]: (state, action) => {
       state.success = true
-      state.formSubmitting = true
+      state.formSubmitting = false
       state.url = {}
-      console.log("s", state.docs)
     },
 
     [saveInfo.rejected]: state => {
       state.success = false
-      state.formSubmitting = true
-      // },
+      state.formSubmitting = false
     },
 
-    [fetchOne.fulfilled]: (state, action) => {
-      console.log(action.payload)
-      state.url = action.payload
-    },
+
     [downloadOne.fulfilled]: (state, action) => {
       state.currentUrl = action.payload
     }
@@ -172,7 +165,7 @@ const fileSlice = createSlice({
 });
 
 // console.log(cartSlice);
-export const { downloadDoc, stopLoading, openPdfViewer } =
+export const { downloadDoc, stopFormLoader, openPdfViewer, storeArchive } =
   fileSlice.actions;
 
 export default fileSlice.reducer;

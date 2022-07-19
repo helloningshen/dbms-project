@@ -7,9 +7,7 @@ import images from "../Jsons/Images.json"
 import styles from "./Dashboard.module.css"
 
 const Authors = () => {
-    useEffect(() => {
-        console.log(location.pathname)
-    }, [])
+
     const ddItems = [
         {
             id: 1,

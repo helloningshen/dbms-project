@@ -23,7 +23,7 @@ function uploadDoc(request, response) {
       const type = await fileTypeFromBuffer(buffer);
       const fileName = `uploads/${Date.now().toString()}`;
       const data = await uploadFile(buffer, fileName, type);
-      data.originalFileName = files.file[0].originalFileName
+      data.originalFileName = files.file[0].originalFilename
       return response.status(200).send(data);
     } catch (err) {
       console.log(err)
@@ -57,7 +57,6 @@ function fetchDocs(request, response) {
 function downloadOne(request, response) {
 
   FileModel.findOne(request.params.id, async (err, data) => {
-    console.log("data", request.params.id)
     if (err) {
       console.log(err)
       return res.status(404).send({ message: `Not found  with id ${req.params.id}.` });
@@ -87,4 +86,31 @@ function downloadOne(request, response) {
     }
   });
 }
-export { uploadDoc, saveInfo, fetchDocs, downloadOne }
+
+
+
+function deleteOne(request, response) {
+  FileModel.findOne(request.params.id, async (err, data) => {
+    if (err) return response.status(404).send({ msg: "no item found" })
+
+
+    const s3 = new aws.S3({
+      accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+      secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+      Bucket: process.env.S3_BUCKET,
+    });
+
+    s3.deleteObject({ Bucket: process.env.S3_BUCKET, Key: data.s3Key }, (err, data) => {
+      console.error(err);
+      console.log(data);
+    });
+  })
+
+
+
+  FileModel.deleteOne(request.params.id, async (err, data) => {
+    if (err) return response.status(500).send({ msg: "Something went wrong." })
+    return response.status(200).send({ msg: "File successfully deleted." })
+  })
+}
+export { uploadDoc, saveInfo, fetchDocs, downloadOne, deleteOne }

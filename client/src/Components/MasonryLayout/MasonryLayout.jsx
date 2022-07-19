@@ -2,6 +2,7 @@
 import styles from "./MasonryLayout.module.css"
 import Masonry from "react-masonry-css"
 import MasonryBox from './MasonryBox/MasonryBox';
+import Masonry2 from "./MasonryBox/MasonryBox2";
 
 // MasonryLayout Component
 const MasonryLayout = ({ images, docs }) => {
@@ -19,10 +20,11 @@ const MasonryLayout = ({ images, docs }) => {
       columnClassName={styles["my-masonry-grid_column"]}
     >
       {docs && docs.map(item => (
-        <MasonryBox
+        <Masonry2
           key={item.id}
-          filename={item.filename}
+          filename={item.name}
           authorName={item.author}
+          originalFileName={item.originalFileName}
           wallSrc={item.thumbnail.src}
           userProf={item.thumbnail.user.src}
           userName={item.thumbnail.user.name}

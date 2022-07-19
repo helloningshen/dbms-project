@@ -3,11 +3,16 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { useDispatch, useSelector } from 'react-redux'
-import { stopLoading, saveInfo } from '../../features/file-slice';
+import { stopFormLoader, saveInfo, fetchDocs } from '../../features/file-slice';
 import { closeFormModal } from '../../features/modal-slice';
-import { ToastContainer } from 'react-toastify'
-import { notify } from "../../utilities/notify"
 import DragDrop from './DragDrop';
+import { toast } from 'react-toastify'
+
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
 
 
 
@@ -17,7 +22,8 @@ const Form = () => {
   const [name, setName] = useState("");
   const [author, setAuthor] = useState("");
   const [description, setDesc] = useState("");
-
+  const [bookType, setBookType] = useState("")
+  const [semester, setSemester] = useState("")
 
   const submitForm = () => {
     const payload = {
@@ -26,15 +32,18 @@ const Form = () => {
       url: url.Location,
       originalFileName: url.originalFileName,
       s3Key: url.Key,
+      bookType: bookType == "academic" ? semester : "other"
+
     }
+
     dispatch(saveInfo(payload))
-    setTimeout(() => {
-      dispatch(stopLoading())
-      dispatch(closeFormModal())
-      const text = success ? "File Upload completed successfully." : "Something is wrong with the upload. Please Try again."
-      notify(text)
-    }, 2000)
+    dispatch(closeFormModal())
+    dispatch(stopFormLoader())
+    toast.success("File Upload completed successfully.");
+    dispatch(fetchDocs())
   }
+
+
 
   return (
     <>
@@ -47,13 +56,14 @@ const Form = () => {
           noValidate
           autoComplete="off"
         >
-          <h1>Provide Information about the book.</h1>
+          <h1 style={{ fontSize: 30, textAlign: "center", color: "#9b5de5" }}>Provide Book Information.</h1>
           <div>
 
             <TextField
               id="bookName"
               label="Name"
               type="text"
+
               autoComplete=""
               variant="standard"
               value={name}
@@ -82,16 +92,53 @@ const Form = () => {
               onChange={(e) => setDesc(e.target.value)}
 
             />
-
-
+            <br />
+            <FormControl>
+              <FormLabel id="demo-row-radio-buttons-group-label">Choose an option </FormLabel>
+              <RadioGroup
+                row
+                aria-labelledby="demo-row-radio-buttons-group-label"
+                name="row-radio-buttons-group"
+              >
+                <FormControlLabel onClick={e => setBookType(e.target.value)} value="academic" control={<Radio />} label="MCS/MCA" />
+                <FormControlLabel onClick={e => setBookType(e.target.value)} value="other" control={<Radio />} label="others" />
+                <div></div>
+              </RadioGroup>
+            </FormControl>
 
             {
-              !uploaded ? <div style={{ display: "flex", textAlign: "center", justifyContent: "center", alignItems: "center", paddingTop: 16 }}>
-                <DragDrop />
-              </div> : <h1>File is uploaded</h1>
-            }
+              bookType == "academic" ?
 
-            <div style={{ display: "flex", textAlign: "center", justifyContent: "center", paddingTop: 16 }}>
+                <TextField
+                  id="semester"
+                  label="Enter Semster"
+                  type="text"
+                  autoComplete=""
+                  variant="standard"
+                  value={semester}
+                  onChange={(e) => setSemester(e.target.value)}
+
+                /> : ""}
+            <>
+              <div style={{ display: "flex", flexDirection: "column", textAlign: "center", justifyContent: "center", alignItems: "center", paddingTop: "16" }}>
+
+                {
+                  !uploaded ?
+                    <React.Fragment>
+                      <h1 style={{ color: "#c77dff" }}>Choose a file to upload!</h1>
+                      <br />
+                      <DragDrop />
+                    </React.Fragment>
+                    : <h1 style={{ color: "#c2e812" }}> File is uploaded</h1>
+
+
+                }
+              </div>
+            </>
+
+
+
+            <div style={{ display: "flex", textAlign: "center", justifyContent: "center", paddingTop: "16" }}>
               <LoadingButton
                 size="large"
                 color="secondary"
@@ -107,7 +154,6 @@ const Form = () => {
           </div>
         </Box>
       </div>
-      <ToastContainer />
     </>
   )
 }

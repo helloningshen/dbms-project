@@ -24,5 +24,5 @@ Run server (in second terminal)
 ## backend  :
 - [x] FE: UI
 - [x] API: FILES
-- [ ] AUTH
-
+- [x] AUTH
+- [ ] ABOUT

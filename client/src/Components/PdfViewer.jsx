@@ -9,7 +9,6 @@ export default function PdfViewerComponent(props) {
 
     (async function () {
       const baseUrl = `${window.location.protocol}//${window.location.host}/${process.env.PUBLIC_URL}`
-      console.log("baseURL", baseUrl)
       PSPDFKit = await import("pspdfkit");
       await PSPDFKit.load({
         container,

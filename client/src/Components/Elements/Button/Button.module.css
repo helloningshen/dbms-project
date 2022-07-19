@@ -22,3 +22,9 @@
     background-color: transparent;
     color: var(--white-100);
 }
+
+.button.danger {
+    background-color: red;
+    color: var(--white-100);
+
+}

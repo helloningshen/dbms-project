@@ -23,6 +23,7 @@ const dbConfig = () => {
           author VARCHAR(255),
           url varchar(225) not null,
           s3Key varchar(225) not null,
+          bookType varchar(225),
           primary key(id))`;
 
   const userTable = `create table if not exists user  (id varchar(250) not null, email varchar(250) not null, password varchar(250) not null, refresh_token varchar(225) , primary key(id))`;
