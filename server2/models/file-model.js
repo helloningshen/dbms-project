@@ -71,7 +71,7 @@ FileModel.updateById = async (file, result) => {
 
 
 
-FileModel.remove = async (id, result) => {
+FileModel.deleteOne = async (id, result) => {
   const response = (err, res) => {
     if (err) {
       result(null, err);

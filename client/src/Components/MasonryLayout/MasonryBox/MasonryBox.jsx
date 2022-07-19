@@ -1,16 +1,16 @@
 // import styles of this component
-import styles from "./MasonryBox.module.css"
 import { PropTypes } from 'prop-types';
 import { Link } from "react-router-dom"
-import DownloadIcon from '@mui/icons-material/Download';
-import Button from "@mui/material/Button"
-
-import ChromeReaderModeIcon from '@mui/icons-material/ChromeReaderMode';
 import { useDispatch, useSelector } from "react-redux"
-import { downloadOne, fetchOne } from "../../../features/file-slice";
+import { downloadOne } from "../../../features/file-slice";
 import { closeDownloadModal, openDownloadModal } from "../../../features/modal-slice"
+import ChromeReaderModeIcon from '@mui/icons-material/ChromeReaderMode';
+import DownloadIcon from '@mui/icons-material/Download';
 import Modal from "../../Modal"
-const MasonryBox = ({ filename, wallSrc, userProf, authorName, type, id, url }) => {
+import Button from "@mui/material/Button"
+import styles from "./MasonryBox.module.css"
+
+const MasonryBox = ({ filename, originalFileName, wallSrc, userProf, authorName, type, id, url }) => {
   const { downloadModal } = useSelector(store => store.modal)
   const { currentUrl } = useSelector(store => store.fileList)
   const dispatch = useDispatch()
@@ -20,9 +20,6 @@ const MasonryBox = ({ filename, wallSrc, userProf, authorName, type, id, url }) 
     dispatch(downloadOne({ id, path: url, mimetype: "application/pdf" }))
     dispatch(openDownloadModal())
   }
-
-
-
 
   const handleCloseModal = () => dispatch(closeDownloadModal())
 
@@ -35,7 +32,10 @@ const MasonryBox = ({ filename, wallSrc, userProf, authorName, type, id, url }) 
       </Modal>
       <div className={styles["my-masonry"]}>
         <img src={wallSrc} style={{ width: "100%" }} alt="" />
+        <h1 style={{ zIndex: 100, position: "relative", top: 0 }}>{originalFileName}</h1>
+
         <div className={`${styles["my-masnry-description"]} flex`}>
+
           <div className={`${styles["my-masnry-user-box"]} flex align-items-center`}>
             <div className={styles["my-masnry-user-prof"]}>
               <img src={userProf} alt="" />

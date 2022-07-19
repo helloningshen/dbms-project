@@ -24,7 +24,6 @@ export const register = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const res = await axios.post(urls.register, payload)
-      console.log(res)
       return res.data;
     } catch (err) { console.log(err) }
   }
@@ -34,13 +33,12 @@ export const login = createAsyncThunk(
   'login',
   async (payload, thunkAPI) => {
     try {
-      console.log(payload)
       const res = await axios.post(urls.login, payload);
-      console.log(res.data)
       return res.data;
     } catch (err) { console.log(err) }
   }
 )
+
 
 
 
@@ -54,6 +52,10 @@ export const authSlice = createSlice({
 
     startRegisterLoading: (state) => {
       state.registerSubmittingForm = true
+    },
+    logout: (state) => {
+      state.user = {}
+      localStorage.clear()
     }
   },
   extraReducers: {
@@ -61,15 +63,19 @@ export const authSlice = createSlice({
       state.registerSubmittingForm = false
     },
     [login.fulfilled]: (state, action) => {
+
       state.user = action.payload
-      // localStorage.clear()
+      console.log(action.payload)
       localStorage.setItem("user", JSON.stringify(action.payload))
       state.loginSubmittingForm = false
-    }
+
+      window.location.href = "/"
+    },
+
   }
 })
 
 
-export const { startLoginLoading, startRegisterLoading } = authSlice.actions
+export const { startLoginLoading, startRegisterLoading, logout } = authSlice.actions
 
 export default authSlice.reducer

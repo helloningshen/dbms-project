@@ -51,12 +51,13 @@ export const loginUser = async (req, res) => {
       }
       console.log(data)
       const match = await bcrypt.compare(password, data.password);
-
+      console.log(match)
       if (!match) return res.status(500).send({ msg: "password does not match." })
-
       const accessToken = jwt.sign({ id: data.id, email: data.email }, process.env.ACCESS_TOKEN_SECRET, {
         expiresIn: '1d'
       });
+
+      console.log(accessToken)
       return res.status(200).json({ accessToken, data });
     })
   } catch (err) { }

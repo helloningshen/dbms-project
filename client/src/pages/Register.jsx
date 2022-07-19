@@ -30,7 +30,7 @@ export default function Register() {
 
 
   const handleSubmit = () => {
-    dispatch(startLRegisterLoading())
+    dispatch(startRegisterLoading())
     const payload = {
       email,
       password,
