@@ -58,12 +58,12 @@ export const deleteItem = createAsyncThunk(
   "delete",
   async (id, thunkAPI) => {
     try {
-      console.log("requesting", id)
       const res = await axios.delete(`${urls.delete}/${id}`)
       console.log(res)
     } catch (err) { }
   }
 )
+
 
 
 
@@ -80,6 +80,11 @@ const fileSlice = createSlice({
     storeArchive: (state, action) => {
       state.archive = state.docs.filter(file => file.bookType != "other")
     },
+
+    filterSearch: (state, action) => {
+      state.docs = action.payload
+      return
+    }
   },
 
   extraReducers: {
@@ -133,7 +138,7 @@ const fileSlice = createSlice({
 });
 
 // console.log(cartSlice);
-export const { downloadDoc, stopFormLoader, openPdfViewer, storeArchive } =
+export const { downloadDoc, stopFormLoader, openPdfViewer, storeArchive, filterSearch } =
   fileSlice.actions;
 
 export default fileSlice.reducer;

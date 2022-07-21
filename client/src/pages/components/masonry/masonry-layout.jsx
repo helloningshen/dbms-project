@@ -24,10 +24,6 @@ const MasonryLayout = ({ images, docs }) => {
           filename={item.name}
           authorName={item.author}
           originalFileName={item.originalFileName}
-          wallSrc={item.thumbnail.src}
-          userProf={item.thumbnail.user.src}
-          userName={item.thumbnail.user.name}
-          userJob={item.thumbnail.user.job}
           id={item.id}
           url={item.url}
         />

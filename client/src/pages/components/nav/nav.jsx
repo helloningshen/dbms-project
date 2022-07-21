@@ -52,7 +52,7 @@ const Nav = () => {
 				</li>
 
 				<li className={`${styles["nav-item"]} ${styles["d-none-1100"]}`}>
-					<a href="" className={styles["nav-link"]}>About</a>
+					<Link to="/about" className={styles["nav-link"]}>About</Link>
 				</li>
 			</ul>
 			<div className={`flex ${styles["navbar-buttons"]}`}>

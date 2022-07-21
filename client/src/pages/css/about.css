@@ -1,0 +1,169 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 30vh;
+}
+
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  gap: 27px;
+}
+
+.left {
+  width: 888px;
+  min-height: 224px;
+  background-color: #fff;
+  border-radius: 16px;
+  padding: 40px 87px 40px 40px;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 4%);
+}
+
+.img-title {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.title {
+  display: flex;
+  flex-direction: column;
+  gap: 17px;
+}
+
+.span-bold {
+  font-size: 22px;
+  font-weight: 100;
+  color: #081f32;
+  font-family: "DM Serif Display", serif;
+}
+
+.span-light {
+  font-size: 16px;
+  font-weight: 100;
+  color: #a5adbb;
+  font-family: "Open Sans", sans-serif;
+}
+
+.p-light {
+  font-size: 16px;
+  font-weight: 100;
+  color: #6e798c;
+  font-family: "Open Sans", sans-serif;
+  line-height: 20px;
+}
+
+.left-container {
+  display: flex;
+  align-items: center;
+  gap: 81px;
+}
+
+.detail {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.specs {
+  font-size: 16px;
+  font-weight: 100;
+  color: #6e798c;
+  font-family: "Open Sans", sans-serif;
+}
+
+.badge {
+  font-size: 16px;
+  font-weight: 800;
+  font-family: "Open Sans", sans-serif;
+  color: #081f32;
+}
+
+.detail-container {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.d-flex {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.icon-badge {
+  width: 24px;
+  height: 24px;
+}
+
+/* right */
+.right {
+  width: 340px;
+  background: linear-gradient(135deg, rgb(4, 190, 254), rgb(68, 129, 235));
+  border-radius: 16px;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 4%);
+  padding: 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.abs-img {
+  position: absolute;
+  top: 0;
+  left: -8px;
+}
+
+.subject {
+  font-size: 26px;
+  font-weight: 100;
+  font-family: "DM Serif Display", serif;
+  color: #fff;
+}
+
+.d-flex-gap {
+  display: flex;
+  flex-direction: column;
+}
+
+.btn {
+  align-self: flex-end;
+
+  width: 101px;
+  height: 37px;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 7%);
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn button {
+  border: 0;
+  outline: 0;
+  background-color: transparent;
+  /* padding: 13px 31px; */
+  color: #3187e1;
+  font-size: 16px;
+  font-family: "Open Sans", sans-serif;
+  font-weight: 800;
+}
+
+
+.img {
+  width: 8rem;
+  height: 10rem;
+  border-radius: 4px;
+}
+
+.member {
+  padding-top: 1rem;
+}
+
+.member>li {
+  padding-top: 1rem;
+  color: white;
+}

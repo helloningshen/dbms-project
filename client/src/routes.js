@@ -1,8 +1,9 @@
-import SignIn from "./pages/login"
-import Dashboard from './pages/dashboard'
-import Archive from "./pages/archive"
-import PdfPreview from "./pages/pdf-viewer"
-import Register from "./pages/register"
+import SignIn from "./pages/login-page"
+import Dashboard from './pages/dashboard-page'
+import Archive from "./pages/archive-page"
+import PdfPreview from "./pages/pdf-viewer-page"
+import Register from "./pages/register-page"
+import About from "./pages/about-page"
 
 
 const routes = [
@@ -31,6 +32,11 @@ const routes = [
     {
         pathName: "/single/:id",
         component: PdfPreview,
+        exact: true,
+    },
+    {
+        pathName: "/about",
+        component: About,
         exact: true,
     }
 ]

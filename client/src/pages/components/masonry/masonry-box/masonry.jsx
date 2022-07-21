@@ -16,7 +16,7 @@ const colors = ["#a2d2ff", "#ffafcc", "#f1faee", "#e63946", "#fca311", "#00f5d4"
 
 
 
-const Masonry2 = ({ filename, originalFileName, wallSrc, userProf, authorName, type, id, url }) => {
+const Masonry2 = ({ filename, originalFileName, authorName, id, url }) => {
   const dispatch = useDispatch()
   const { downloadModal } = useSelector(store => store.modal)
   const { currentUrl } = useSelector(store => store.fileList)
@@ -41,7 +41,7 @@ const Masonry2 = ({ filename, originalFileName, wallSrc, userProf, authorName, t
       <ToastContainer />
       <Modal open={downloadModal} btn={"Download File."}>
         <div>
-          <a href={currentUrl} target="_blank" onClick={handleCloseModal}>Download Your file</a>
+          <a href={currentUrl} target="_blank" onClick={handleCloseModal}>Click to Download: {originalFileName} </a>
         </div>
       </Modal>
       <div className={style["content"]}>

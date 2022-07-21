@@ -16,6 +16,7 @@
     "axios": "^0.27.2",
     "downloadjs": "^1.4.7",
     "iconsax-react": "^0.0.8",
+    "lodash.debounce": "^4.0.8",
     "prop-types": "^15.8.1",
     "pspdfkit": "~2022.3.0",
     "react": "^18.0.0",

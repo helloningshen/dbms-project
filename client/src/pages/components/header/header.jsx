@@ -10,7 +10,6 @@ const Header = () => {
         <div className={styles["blur-circle-shape"]}></div>
         <Nav />
         <div className={`${styles["headings-header"]} flex justify-content-center flex-column `}>
-          <h2 className={styles["heading-header-title"]}>"A word after a word after a word is power." – Margaret Atwood 😎🤘</h2>
 
         </div>
       </ContainerCard>
