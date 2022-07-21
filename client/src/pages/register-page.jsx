@@ -42,7 +42,7 @@ export default function Register() {
   }
   return (
     <>
-      <ToastContainer />
+      {/* <ToastContainer /> */}
       <div className={styles["content"]}>
         <div className={styles["login_form"]}>
           <Link to="/">

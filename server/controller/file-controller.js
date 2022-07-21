@@ -18,7 +18,6 @@ function uploadDoc(request, response) {
     try {
       const path = files.file[0].path;
 
-      console.log(files.file[0])
       const buffer = fs.readFileSync(path);
       const type = await fileTypeFromBuffer(buffer);
       const fileName = `uploads/${Date.now().toString()}`;

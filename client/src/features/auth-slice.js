@@ -57,12 +57,10 @@ export const authSlice = createSlice({
       state.registerSubmittingForm = false
     },
     [login.fulfilled]: (state, action) => {
-
       state.user = action.payload
-      console.log(action.payload)
       localStorage.setItem("user", JSON.stringify(action.payload))
       state.loginSubmittingForm = false
-
+      console.log(action.payload)
       window.location.href = "/"
     },
 

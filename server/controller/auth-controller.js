@@ -43,13 +43,13 @@ export const registerUser = async (req, res) => {
 }
 
 export const loginUser = async (req, res) => {
+  console.log("logging in.")
   try {
     const { email, password } = req.body;
     AuthModel.findByEmail(email, async (err, data) => {
       if (err) {
         return res.status(404).send({ message: `Not found  with id ${req.params.id}.` });
       }
-      console.log(data)
       const match = await bcrypt.compare(password, data.password);
       console.log(match)
       if (!match) return res.status(500).send({ msg: "password does not match." })

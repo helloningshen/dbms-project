@@ -17,7 +17,7 @@ import { openFormModal } from '../../../features/modal-slice'
 
 const Nav = () => {
 	const [auth, setAuth] = useState();
-	const [user, setUser] = useState();
+	const [user, setUser] = useState({});
 	const { formModal } = useSelector(store => store.modal)
 	const dispatch = useDispatch()
 	const handleOpenModal = () => {
@@ -25,11 +25,13 @@ const Nav = () => {
 	}
 
 	useEffect(() => {
-		const user = JSON.parse(localStorage.getItem("user"))
-		setUser(user)
-		if (user && user.accessToken) setAuth(true)
-	}, [])
+		let u = localStorage.getItem("user")
+		if (u === "undefined" || u === null) return;
 
+		u = JSON.parse(u);
+		setUser(u)
+		if (u.accessToken) setAuth(true)
+	}, [])
 
 
 	const handleLogout = () => {

@@ -111,7 +111,7 @@ const Form = () => {
 
                 <TextField
                   id="semester"
-                  label="Enter Semster"
+                  label="Enter Semster (msc1 || msc2 || msc3)"
                   type="text"
                   autoComplete=""
                   variant="standard"

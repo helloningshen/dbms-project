@@ -24,7 +24,8 @@ const About = () => {
                 <div class="subject"><ul>Team Member</ul></div>
                 <ul className="member">
                   <li>Richard Kullu(34)</li>
-                  <li>Anitesh Minj</li>
+                  <li>Anitesh Minj(04)</li>
+                  <li>Gaurav R Yadav(12)</li>
                   <li>Ningyao Ningshen(29)</li>
                 </ul>
               </div>
