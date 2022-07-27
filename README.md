@@ -1,5 +1,5 @@
 ```
-DBMS-project
+DBA-project
 ```
 
 * [express] https://expressjs.com/en/starter/installing.html
@@ -7,7 +7,7 @@ DBMS-project
 
 
 ```
-HOW TO RUN THE PROJECT
+HOW TO RUN THE PROJECT --
 
 
 Step: 1
