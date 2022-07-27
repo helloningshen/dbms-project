@@ -42,8 +42,6 @@ function saveInfo(request, response) {
 }
 
 
-
-
 function fetchDocs(request, response) {
   FileModel.findAll((err, data) => {
     data = Object.values(JSON.parse(JSON.stringify(data)))

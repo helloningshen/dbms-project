@@ -12,7 +12,6 @@ const Archive = () => {
 	const dispatch = useDispatch()
 	useEffect(() => {
 		dispatch(storeArchive())
-		console.log("archive", archive)
 	}, [])
 
 	return (

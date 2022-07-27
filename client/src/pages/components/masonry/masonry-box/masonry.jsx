@@ -38,6 +38,7 @@ const Masonry2 = ({ filename, originalFileName, authorName, id, url }) => {
 
   return (
     <>
+      <h1>{text}</h1>
       <ToastContainer />
       <Modal open={downloadModal} btn={"Download File."}>
         <div>

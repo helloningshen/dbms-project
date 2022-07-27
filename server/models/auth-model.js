@@ -7,6 +7,7 @@ const AuthModel = function ({ id, email, password }) {
   this.password = password;
 }
 
+
 AuthModel.insert = async (payload, result) => {
   const response = (err, res) => {
     if (err) {
