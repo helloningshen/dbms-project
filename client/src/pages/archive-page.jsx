@@ -5,13 +5,16 @@ import ArchiveContent from './components/archive/archive-content';
 import MainLayout from "./components/layout"
 import styles from "./css/archive.module.css"
 import { useSelector, useDispatch } from 'react-redux';
-import { storeArchive } from '../features/file-slice';
+import { fetchDocs, storeArchive } from '../features/file-slice';
 const Archive = () => {
 
-	const { archive } = useSelector(store => store.fileList)
+	const { archive, docs } = useSelector(store => store.fileList)
 	const dispatch = useDispatch()
 	useEffect(() => {
-		dispatch(storeArchive())
+		if (docs.length < 1) {
+			dispatch(fetchDocs())
+			dispatch(storeArchive())
+		}
 	}, [])
 
 	return (
@@ -24,7 +27,9 @@ const Archive = () => {
 			</header>
 			<MainLayout>
 				<div className={` ${styles["services-inner"]}`}>
-					<ArchiveContent />
+					{
+						archive.length <= 0 ? <h1>Loading</h1> : <ArchiveContent />
+					}
 				</div>
 			</MainLayout>
 		</>

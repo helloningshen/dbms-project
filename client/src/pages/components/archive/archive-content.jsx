@@ -31,14 +31,11 @@ export default function FullWidthTabs() {
 
 
   useEffect(() => {
+    setMcs1(archive.filter(item => item.bookType == "msc1"))
+    setMcs2(archive.filter(item => item.bookType == "msc2"))
+    setMcs3(archive.filter(item => item.bookType == "msc3"))
 
-    const m1 = archive.filter(item => item.bookType == "msc1")
-    const m2 = archive.filter(item => item.bookType == "msc2")
-    const m3 = archive.filter(item => item.bookType == "msc3")
-
-    setMcs1(m1)
-    setMcs2(m2)
-    setMcs3(m3)
+    console.log(mcs3)
   }, [])
 
   const handleChange = (event, newValue) => {
@@ -50,54 +47,59 @@ export default function FullWidthTabs() {
   };
 
   return (
-    <Box sx={{ bgcolor: 'background.paper', width: 900 }}>
-      <AppBar position="static">
-        <Tabs
-          value={value}
-          onChange={handleChange}
-          indicatorColor="secondary"
-          textColor="inherit"
-          variant="fullWidth"
-          aria-label="full width tabs example"
-        >
-          <Tab label="SEMESTER 1" {...a11yProps(0)} />
-          <Tab label="SEMESTER 2" {...a11yProps(1)} />
-          <Tab label="SEMESTER 3" {...a11yProps(2)} />
-          <Tab label="SEMESTER 4" {...a11yProps(3)} />
-        </Tabs>
-      </AppBar>
-      <SwipeableViews
-        axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
-        index={value}
-        onChangeIndex={handleChangeIndex}
-      >
+    <>
+      {
+        <Box sx={{ bgcolor: 'background.paper', width: 900 }}>
+          <AppBar position="static">
+            <Tabs
+              value={value}
+              onChange={handleChange}
+              indicatorColor="secondary"
+              textColor="inherit"
+              variant="fullWidth"
+              aria-label="full width tabs example"
+            >
+              <Tab label="SEMESTER 1" {...a11yProps(0)} />
+              <Tab label="SEMESTER 2" {...a11yProps(1)} />
+              <Tab label="SEMESTER 3" {...a11yProps(2)} />
+              <Tab label="SEMESTER 4" {...a11yProps(3)} />
+            </Tabs>
+          </AppBar>
+          <SwipeableViews
+            axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
+            index={value}
+            onChangeIndex={handleChangeIndex}
+          >
 
-        <TabPanel value={value} index={0} dir={theme.direction}>
-          {
-            mcs1.map(i => <Item item={i} />)
-          }
-        </TabPanel>
+            <TabPanel value={value} index={0} dir={theme.direction}>
+              {
+                mcs1.map((i, idx) => <Item key={idx} item={i} />)
+              }
+            </TabPanel>
 
 
-        <TabPanel value={value} index={1} dir={theme.direction}>
-          {
-            mcs2.map(item => <Item item={item} />)
+            <TabPanel value={value} index={1} dir={theme.direction}>
+              {
+                mcs2.map((item, idx) => <Item key={idx} item={item} />)
 
-          }
-        </TabPanel>
+              }
+            </TabPanel>
 
-        <TabPanel value={value} index={3} dir={theme.direction}>
-          {
-            mcs3.map(item => <Item item={item} />)
-          }
-        </TabPanel>
+            <TabPanel value={value} index={2} dir={theme.direction}>
+              {
+                mcs3.map((item, idx) => <Item key={idx} item={item} />)
 
-        <TabPanel value={value} index={3} dir={theme.direction}>
-          <h1>Project</h1>
+              }
+            </TabPanel>
 
-        </TabPanel>
+            <TabPanel value={value} index={3} dir={theme.direction}>
+              <h1>Project</h1>
 
-      </SwipeableViews>
-    </Box>
+            </TabPanel>
+
+          </SwipeableViews>
+        </Box>
+      }
+    </>
   );
 }

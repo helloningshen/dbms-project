@@ -2,15 +2,16 @@ import { Link } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import { downloadOne, fetchDocs, deleteItem } from "../../../../features/file-slice";
 import { closeDownloadModal, openDownloadModal } from "../../../../features/modal-slice"
-
+import { setUser } from "../../../../features/auth-slice"
 import Modal from "../../modal"
 import style from "../../../css/masonry.module.css"
 
 import Button from "@mui/material/Button"
-import ClearIcon from '@mui/icons-material/Clear';
+import DeleteIcon from "@mui/icons-material/Delete"
 import ChromeReaderModeIcon from '@mui/icons-material/ChromeReaderMode';
 import DownloadIcon from '@mui/icons-material/Download';
 import { ToastContainer, toast } from 'react-toastify'
+import { useEffect, useState } from "react";
 
 const colors = ["#a2d2ff", "#ffafcc", "#f1faee", "#e63946", "#fca311", "#00f5d4", "#011627"]
 
@@ -18,8 +19,18 @@ const colors = ["#a2d2ff", "#ffafcc", "#f1faee", "#e63946", "#fca311", "#00f5d4"
 
 const Masonry2 = ({ filename, originalFileName, authorName, id, url }) => {
   const dispatch = useDispatch()
+
   const { downloadModal } = useSelector(store => store.modal)
   const { currentUrl } = useSelector(store => store.fileList)
+
+  const [auth, setAuth] = useState();
+  useEffect(() => {
+    let u = localStorage.getItem("user")
+    if (u === "undefined" || u === null) return;
+    u = JSON.parse(u);
+    if (u.accessToken) setAuth(true)
+  }, [])
+
 
   const downloadDocument = (id, url) => {
     dispatch(downloadOne({ id, path: url, mimetype: "application/pdf" }))
@@ -30,7 +41,6 @@ const Masonry2 = ({ filename, originalFileName, authorName, id, url }) => {
 
 
   const handleDelete = (id) => {
-    console.log("handling delete")
     dispatch(deleteItem(id))
     dispatch(fetchDocs())
     toast.success("Successfully deleted")
@@ -38,7 +48,6 @@ const Masonry2 = ({ filename, originalFileName, authorName, id, url }) => {
 
   return (
     <>
-      <h1>{text}</h1>
       <ToastContainer />
       <Modal open={downloadModal} btn={"Download File."}>
         <div>
@@ -63,9 +72,11 @@ const Masonry2 = ({ filename, originalFileName, authorName, id, url }) => {
           <Link to={`/single/${id}`}>
             <ChromeReaderModeIcon />
           </Link>
-          <Button onClick={() => handleDelete(id)}>
-            <ClearIcon style={{ color: "red" }} />
-          </Button>
+          {
+            auth && <Button onClick={() => handleDelete(id)}>
+              <DeleteIcon style={{ color: "red" }} />
+            </Button>
+          }
         </div>
       </div>
     </>

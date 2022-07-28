@@ -59,7 +59,7 @@ export const deleteItem = createAsyncThunk(
   async (id, thunkAPI) => {
     try {
       const res = await axios.delete(`${urls.delete}/${id}`)
-      console.log(res)
+      return res.data
     } catch (err) { }
   }
 )
@@ -93,6 +93,8 @@ const fileSlice = createSlice({
     },
     [fetchDocs.fulfilled]: (state, action) => {
       state.docs = action.payload;
+      state.archive = action.payload.filter(file => file.bookType != "other")
+
     },
     [fetchDocs.rejected]: (state, action) => {
       state.isLoading = false;
@@ -123,6 +125,7 @@ const fileSlice = createSlice({
       state.success = true
       state.formSubmitting = false
       state.url = {}
+      state.uploaded = false
     },
 
     [saveInfo.rejected]: state => {
@@ -133,7 +136,7 @@ const fileSlice = createSlice({
 
     [downloadOne.fulfilled]: (state, action) => {
       state.currentUrl = action.payload
-    }
+    },
   },
 });
 

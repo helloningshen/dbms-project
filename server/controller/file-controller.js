@@ -45,7 +45,7 @@ function saveInfo(request, response) {
 function fetchDocs(request, response) {
   FileModel.findAll((err, data) => {
     data = Object.values(JSON.parse(JSON.stringify(data)))
-    if (err) return response.status(500).send({ message: err.message || "Some error occurred while retrieving files." });
+    if (err) response.status(500).send({ message: err.message || "Some error occurred while retrieving files." });
     return response.status(200).send(data);
   });
 }
@@ -99,7 +99,6 @@ function deleteOne(request, response) {
 
     s3.deleteObject({ Bucket: process.env.S3_BUCKET, Key: data.s3Key }, (err, data) => {
       console.error(err);
-      console.log(data);
     });
   })
 
@@ -107,7 +106,7 @@ function deleteOne(request, response) {
 
   FileModel.deleteOne(request.params.id, async (err, data) => {
     if (err) return response.status(500).send({ msg: "Something went wrong." })
-    return response.status(200).send({ msg: "File successfully deleted." })
+    return response.status(200).send({ data, msg: "File successfully deleted." })
   })
 }
 export { uploadDoc, saveInfo, fetchDocs, downloadOne, deleteOne }
