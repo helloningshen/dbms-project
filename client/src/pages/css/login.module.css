@@ -18,7 +18,7 @@
   border-bottom: 3px solid var(--colour-four);
   border-right: 3px solid var(--colour-four);
   background: var(--colour-one);
-  height: 400px;
+  height: 500px;
   width: 700px;
   box-shadow: 10px 10px 6px 2px rgba(251, 150, 111, 0.6);
   overflow: hidden;

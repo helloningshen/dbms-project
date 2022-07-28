@@ -13,22 +13,10 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 export default function Login() {
-  const { loginSubmittingForm } = useSelector(store => store.auth)
-
+  const { loginSubmittingForm, loginMessage } = useSelector(store => store.auth)
   const dispatch = useDispatch()
-
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
-  const [confirmPassword, setConfirmPassword] = useState("")
-
-
-
-  const notify = (text, stat) => toast[stat](text);
-  const handleMouseLeave = () => password === confirmPassword ? notify("Password matched", "success") : notify("Password does not match.", "warn")
-  const handleMouseOut = () => password.length < 5 ? notify("Password is too short", "warn") : ""
-
-
-
   const handleSubmit = () => {
     dispatch(startLoginLoading())
     const payload = {
@@ -36,7 +24,6 @@ export default function Login() {
       password,
     }
     dispatch(login(payload))
-
   }
   return (
     <>
@@ -63,12 +50,12 @@ export default function Login() {
             noValidate
             autoComplete="off"
           >
-
+            <h1 style={{ color: "red" }}>{loginMessage}</h1>
             <div>
               <TextField
                 required
                 id="outlined-required"
-                label="Username/Emails"
+                label="Email"
                 value={email}
                 onChange={e => setEmail(e.target.value)}
               />
@@ -82,7 +69,6 @@ export default function Login() {
                 value={password}
                 type="password"
                 onChange={(e) => setPassword(e.target.value)}
-                onMouseOut={handleMouseOut}
               />
             </div>
 

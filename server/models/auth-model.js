@@ -19,7 +19,7 @@ AuthModel.insert = async (payload, result) => {
   conn.query("INSERT INTO user SET ?", payload, response);
 }
 
-AuthModel.findOne = async (id, result) => {
+AuthModel.findOne = async (email, result) => {
   const response = (err, res) => {
     if (err) {
       result(err, null);
@@ -31,7 +31,7 @@ AuthModel.findOne = async (id, result) => {
     }
     result({ kind: "not_found" }, null);
   }
-  conn.query(`SELECT * FROM user WHERE id = "${id}"`, response)
+  conn.query(`SELECT * FROM user WHERE email = "${email}"`, response)
 }
 
 

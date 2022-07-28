@@ -10,6 +10,8 @@ const initialState = {
   user: {},
   registerSubmittingForm: false,
   loginSubmittingForm: false,
+  authMessage: "",
+  loginMessage: ""
 }
 
 
@@ -41,11 +43,7 @@ export const authSlice = createSlice({
   initialState,
   reducers: {
     startLoginLoading: (state) => {
-      state.loginSubmittingForm = true
-    },
 
-    startRegisterLoading: (state) => {
-      state.registerSubmittingForm = true
     },
     logout: (state) => {
       state.user = {}
@@ -53,17 +51,30 @@ export const authSlice = createSlice({
     }
   },
   extraReducers: {
-    [register.fulfilled]: (state) => {
+    [register.fulfilled]: (state, action) => {
       state.registerSubmittingForm = false
-    },
-    [login.fulfilled]: (state, action) => {
-      state.user = action.payload
-      localStorage.setItem("user", JSON.stringify(action.payload))
-      state.loginSubmittingForm = false
-      console.log(action.payload)
-      window.location.href = "/"
+
+      if (action.payload == undefined) {
+        state.authMessage = "Email Already in use."
+      } else {
+        window.location.href = "/signin"
+      }
     },
 
+    [login.pending]: (state) => {
+      state.loginMessage = ""
+    },
+    [login.fulfilled]: (state, action) => {
+      if (action.payload == undefined) {
+        state.loginMessage = "Incorrect info. Please try again."
+      } else {
+        state.user = action.payload
+        localStorage.setItem("user", JSON.stringify(action.payload))
+        state.loginSubmittingForm = false
+        console.log(action.payload)
+        window.location.href = "/"
+      }
+    },
   }
 })
 

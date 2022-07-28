@@ -20,26 +20,32 @@ export const getUsers = async (req, res) => {
 export const registerUser = async (req, res) => {
   const { email, password } = req.body;
 
-  const salt = await bcrypt.genSalt();
-  const hashPassword = await bcrypt.hash(password, salt);
-  try {
 
-    const user = {
-      id: crypto.randomBytes(16).toString("hex"),
-      email,
-      password: hashPassword
-    };
+  AuthModel.findOne(email, async (err, data) => {
+    if (data) {
+      return res.status(500).send({ msg: "user already exist." })
+    }
 
-    AuthModel.insert(user, (err, data) => {
-      console.log(err)
-      if (err) return res.status(500).send({ message: err.message || "Some error occurred while retrieving files." });
-      console.log("registration completed.")
-      return res.status(200).send(data);
-    });
+    const salt = await bcrypt.genSalt();
+    const hashPassword = await bcrypt.hash(password, salt);
+    try {
+      const user = {
+        id: crypto.randomBytes(16).toString("hex"),
+        email,
+        password: hashPassword
+      };
 
-  } catch (error) {
-    console.log(error);
-  }
+      AuthModel.insert(user, (err, data) => {
+        if (err) return res.status(500).send({ message: err.message || "Some error occurred while retrieving files." });
+        return res.status(200).send(data);
+      });
+
+    } catch (error) {
+      console.log(error);
+    }
+  });
+
+
 }
 
 export const loginUser = async (req, res) => {

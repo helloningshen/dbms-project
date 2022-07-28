@@ -17,6 +17,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 export default function Register() {
+
+  const { authMessage } = useSelector(store => store.auth)
   const { registerSubmittingForm } = useSelector(store => store.auth)
 
   const dispatch = useDispatch()
@@ -24,25 +26,37 @@ export default function Register() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
+  const [warning, setWarning] = useState("")
 
 
-
-  const notify = (text, stat) => toast[stat](text);
-  const handleMouseLeave = () => password === confirmPassword ? notify("Password matched", "success") : notify("Password does not match.", "warn")
-  const handleMouseOut = () => password.length < 5 ? notify("Password is too short", "warn") : ""
 
   const handleSubmit = () => {
+
+
+    if (!email.includes("@")) {
+      return setWarning("Email is invalid")
+    } else setWarning("")
+
+    if (password.length < 5) {
+      return setWarning("Password is too short");
+    } else setWarning("")
+
+
+    if (password != confirmPassword) {
+      return setWarning("Password does not match.")
+    } else setWarning("")
+
+
     dispatch(startRegisterLoading())
     const payload = {
       email,
       password,
     }
     dispatch(register(payload))
-    window.location.href = "/signin"
   }
+
   return (
     <>
-      {/* <ToastContainer /> */}
       <div className={styles["content"]}>
         <div className={styles["login_form"]}>
           <Link to="/">
@@ -50,7 +64,7 @@ export default function Register() {
               <ArrowBackIosIcon />
             </Button>
           </Link>
-          <h1 style={{ textAlign: "center", fontSize: 25, fontWeight: "bold" }}>Register</h1>
+          <h1 style={{ marginBottom: 20, textAlign: "center", fontSize: 25, fontWeight: "bold" }}>Register</h1>
           <Grid
             container
             spacing={0}
@@ -64,12 +78,13 @@ export default function Register() {
             noValidate
             autoComplete="off"
           >
-
+            <h1 style={{ color: "red" }}>{authMessage}</h1>
+            <h1 style={{ color: "red" }}>{warning}</h1>
             <div>
               <TextField
                 required
                 id="outlined-required"
-                label="Username/Emails"
+                label="Email"
                 value={email}
                 onChange={e => setEmail(e.target.value)}
               />
@@ -83,7 +98,6 @@ export default function Register() {
                 value={password}
                 type="password"
                 onChange={(e) => setPassword(e.target.value)}
-                onMouseOut={handleMouseOut}
               />
             </div>
 
@@ -95,7 +109,6 @@ export default function Register() {
                 value={confirmPassword}
                 type="password"
                 onChange={e => setConfirmPassword(e.target.value)}
-                onMouseLeave={handleMouseLeave}
               />
             </div>
 
